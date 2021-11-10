@@ -8,11 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct RadarChartPath: Shape {
+public struct RadarChartPath: Shape {
     
   let data: [Double]
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
     guard
       3 <= data.count,
       let minimum = data.min(),

@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct RadarChartGrid: Shape {
+public struct RadarChartGrid: Shape {
     
   let categories: Int
   let divisions: Int
   
-  func path(in rect: CGRect) -> Path {
+  public func path(in rect: CGRect) -> Path {
       
     let radius = min(rect.maxX - rect.midX, rect.maxY - rect.midY)
     let stride = radius / CGFloat(divisions)
