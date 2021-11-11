@@ -20,7 +20,7 @@ public struct BarChart: View {
     @State private var currentLabel = ""
     @State private var touchLocation: CGFloat = -1
     
-    init(title: String, legend: String, dataUnit: String, barColor: Color = .blue, data: [BarChartData], maxValue: Double = 0) {
+    public init(title: String, legend: String, dataUnit: String, barColor: Color = .blue, data: [BarChartData], maxValue: Double = 0) {
         self.title = title
         self.legend = legend
         self.dataUnit = dataUnit

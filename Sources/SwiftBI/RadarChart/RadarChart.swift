@@ -17,7 +17,7 @@ public struct RadarChart: View {
     let maxValue: Double
     let divisions: Int
   
-    init(title: String, gridColor: Color = .gray, dataColor: Color = .purple, data: [RadarChartData], maxValue: Double = 0, divisions: Int = 10) {
+    public init(title: String, gridColor: Color = .gray, dataColor: Color = .purple, data: [RadarChartData], maxValue: Double = 0, divisions: Int = 10) {
         self.title = title
         self.gridColor = gridColor
         self.dataColor = dataColor
