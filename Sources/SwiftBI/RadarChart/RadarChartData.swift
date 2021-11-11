@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct RadarChartData {
+
+public struct RadarChartData {
      var label: String
      var value: Double
  }

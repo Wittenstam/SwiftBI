@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct BarChartData {
+public struct BarChartData {
      var label: String
      var value: Double
  }
