@@ -25,6 +25,13 @@ public struct PieChart: View {
         self.data = data
         self.separatorColor = separatorColor
         self.accentColors = accentColors
+        
+        //Uncomment the following initializer to use fully generate random colors instead of using a custom color set
+        accentColors    =   [Color]()
+        for _  in 0..<data.count  {
+           accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+        }
+        
     }
     
     var pieSlices: [PieSlice] {
