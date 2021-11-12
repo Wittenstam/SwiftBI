@@ -11,6 +11,11 @@ import SwiftUI
 
 struct RadarChartPath: Shape {
         
+    var maxX: CGFloat
+    var midX: CGFloat
+    var maxY: CGFloat
+    var midY: CGFloat
+    
     let data: [RadarChartData]
     let maxValue: Double
 
@@ -34,20 +39,20 @@ struct RadarChartPath: Shape {
                 else { return Path() }
             maximumValue = maximum
         }
-        let radius = min(rect.maxX - rect.midX, rect.maxY - rect.midY)
+        let radius = min(maxX - midX, maxY - midY)
         var path = Path()
 
         for (index, entry) in allValues.enumerated() {
             switch index {
                 case 0:
-                  path.move(to: CGPoint(x: rect.midX + CGFloat(entry / maximumValue) * cos(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius,
-                                        y: rect.midY + CGFloat(entry / maximumValue) * sin(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius
+                  path.move(to: CGPoint(x: midX + CGFloat(entry / maximumValue) * cos(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius,
+                                        y: midY + CGFloat(entry / maximumValue) * sin(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius
                                        )
                             )
                   
                 default:
-                  path.addLine(to: CGPoint(x: rect.midX + CGFloat(entry / maximumValue) * cos(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius,
-                                           y: rect.midY + CGFloat(entry / maximumValue) * sin(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius
+                  path.addLine(to: CGPoint(x: midX + CGFloat(entry / maximumValue) * cos(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius,
+                                           y: midY + CGFloat(entry / maximumValue) * sin(CGFloat(index) * 2 * .pi / CGFloat(allValues.count) - .pi / 2) * radius
                                           )
                             )
             }

@@ -27,4 +27,4 @@ let radarChartDataSet = [
     RadarChartData(label: "May", value: 450.0),
     RadarChartData(label: "June", value: 380.0),
     RadarChartData(label: "July", value: 365.98)
- ]
+]
