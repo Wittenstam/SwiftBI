@@ -17,14 +17,12 @@ public struct RadarChart: View {
     var data: [RadarChartData]
     let maxValue: Double
     let divisions: Int
-    var separatorColor: Color
-    var accentColors: [Color]
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
     @State  private var touchLocation: CGPoint = .init(x: -1, y: -1)
   
-    public init(title: String, gridColor: Color = .gray, dataColor: Color = .purple, dataUnit: String, legend: String,  data: [RadarChartData], maxValue: Double = 0, divisions: Int = 10, separatorColor: Color, accentColors: [Color]) {
+    public init(title: String, gridColor: Color = .gray, dataColor: Color = .purple, dataUnit: String, legend: String,  data: [RadarChartData], maxValue: Double = 0, divisions: Int = 10) {
         self.title = title
         self.gridColor = gridColor
         self.dataColor = dataColor
@@ -33,8 +31,6 @@ public struct RadarChart: View {
         self.data = data
         self.maxValue = maxValue
         self.divisions = divisions
-        self.separatorColor = separatorColor
-        self.accentColors = accentColors
     }
     
     var pieSlices: [PieSlice] {
@@ -88,7 +84,7 @@ public struct RadarChart: View {
                         
                         ZStack  {
                             ForEach(0..<self.data.count){ i in
-                                PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: separatorColor.opacity(0.001))
+                                PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: gridColor.opacity(0.001))
                             }
                         }
                             .gesture(DragGesture(minimumDistance: 0)
@@ -162,7 +158,7 @@ public struct RadarChart: View {
 struct RadarChart_Previews: PreviewProvider {
      static var previews: some View {
          Group {
-             RadarChart(title: "Monthly Sales", gridColor: Color.gray, dataColor: Color.purple, dataUnit: "SEK", legend: "Month", data: radarChartDataSet, maxValue: 0, divisions: 10, separatorColor: Color.background, accentColors: pieColors)
+             RadarChart(title: "Monthly Sales", gridColor: Color.gray, dataColor: Color.purple, dataUnit: "SEK", legend: "Month", data: radarChartDataSet, maxValue: 0, divisions: 10)
          }
      }
  }
