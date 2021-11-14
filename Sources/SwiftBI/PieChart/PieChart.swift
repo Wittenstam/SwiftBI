@@ -55,7 +55,7 @@ public struct PieChart: View {
     
 
     public var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(title)
                 .bold()
                 .font(.largeTitle)

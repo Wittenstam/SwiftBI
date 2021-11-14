@@ -34,8 +34,8 @@ public struct BarChart: View {
             Text(title)
                 .bold()
                 .font(.largeTitle)
-            Text("Current value: \(currentValue) \(dataUnit)")
-                .font(.headline)
+//            Text("Current value: \(currentValue) \(dataUnit)")
+//                .font(.headline)
             GeometryReader { geometry in
                 VStack {
                     HStack {
@@ -55,28 +55,46 @@ public struct BarChart: View {
                                 updateCurrentValue()
                             })
                             .onEnded({ position in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     withAnimation(Animation.easeOut(duration: 0.5)) {
                                         resetValues()
                                     }
                                 }
                             })
                         )
-                    if currentLabel.isEmpty {
-                        Text(legend)
-                            .bold()
-                            .foregroundColor(.black)
-                            .padding(5)
-                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                    } else {
-                        Text(currentLabel)
-                            .bold()
-                            .foregroundColor(.black)
-                            .padding(5)
-                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                            .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                            .animation(.easeIn)
+                    
+                    HStack  {
+                        if currentLabel.isEmpty {
+                            Text(legend)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                        } else {
+                            Text(currentLabel)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+//                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+//                                .animation(.easeIn)
+                        }
+                        
+                        if !currentValue.isEmpty {
+                            Text("\(currentValue) \(dataUnit)")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+//                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+//                                .animation(.easeIn)
+                        }
                     }
+                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                    .animation(.easeIn)
+                    .padding()
+                    
                 }
             }
         }
