@@ -12,8 +12,15 @@ public struct PieChart: View {
     var title: String
     var dataUnit: String
     var data: [PieChartData]
-    var separatorColor: Color
-    var accentColors: [Color]
+    
+    var separatorColor: Color = Color.background
+    var accentColors: [Color] {
+        var colors: [Color] = [Color]()
+        for _  in 0..<data.count  {
+            colors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+        }
+        return colors
+    }
     
     @State  private var currentValue = ""
     @State  private var currentLabel = ""
@@ -22,23 +29,18 @@ public struct PieChart: View {
     public init(
                 title: String,
                 dataUnit: String,
-                data: [PieChartData],
-                separatorColor: Color,
-                accentColors: [Color]
+                data: [PieChartData]
     ) {
         self.title = title
         self.dataUnit = dataUnit
         self.data = data
-        self.separatorColor = separatorColor
-        self.accentColors = accentColors
         
         //Uncomment the following initializer to use fully generate random colors instead of using a custom color set
-        self.accentColors    =   [Color]()
-        for _  in 0..<data.count  {
-            self.accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
-        }
+        
         
     }
+    
+    
     
     var pieSlices: [PieSlice] {
         var slices = [PieSlice]()
@@ -185,7 +187,7 @@ public struct PieChart: View {
 struct PieChart_Previews: PreviewProvider {
      static var previews: some View {
          Group {
-             PieChart(title: "Montly Sales", dataUnit: "SEK", data: pieChartDataSet, separatorColor: Color.background, accentColors: pieColors)
+             PieChart(title: "Montly Sales", dataUnit: "SEK", data: pieChartDataSet)
          }
      }
  }

@@ -27,12 +27,7 @@ public struct LineChart: View {
         self.lineColors = lineColors
         self.filled = filled
     }
-    
-    let lineChartColors = [
-        Color.green,
-        Color.blue
-    ]
-    
+
     public var body: some View {
         GeometryReader{ geometry in
             VStack(alignment: .leading, spacing: 8) {
