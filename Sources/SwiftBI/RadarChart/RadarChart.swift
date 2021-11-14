@@ -22,7 +22,16 @@ public struct RadarChart: View {
     @State private var currentLabel = ""
     @State  private var touchLocation: CGPoint = .init(x: -1, y: -1)
   
-    public init(title: String, gridColor: Color = .gray, dataColor: Color = .purple, dataUnit: String, legend: String,  data: [RadarChartData], maxValue: Double = 0, divisions: Int = 10) {
+    public init(
+                title: String,
+                gridColor: Color = .gray,
+                dataColor: Color = .purple,
+                dataUnit: String,
+                legend: String,
+                data: [RadarChartData],
+                maxValue: Double = 0,
+                divisions: Int = 10
+    ) {
         self.title = title
         self.gridColor = gridColor
         self.dataColor = dataColor

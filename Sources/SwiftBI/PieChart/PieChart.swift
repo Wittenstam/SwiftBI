@@ -19,7 +19,13 @@ public struct PieChart: View {
     @State  private var currentLabel = ""
     @State  private var touchLocation: CGPoint = .init(x: -1, y: -1)
     
-    public init(title: String, dataUnit: String, data: [PieChartData], separatorColor: Color, accentColors: [Color]) {
+    public init(
+                title: String,
+                dataUnit: String,
+                data: [PieChartData],
+                separatorColor: Color,
+                accentColors: [Color]
+    ) {
         self.title = title
         self.dataUnit = dataUnit
         self.data = data
