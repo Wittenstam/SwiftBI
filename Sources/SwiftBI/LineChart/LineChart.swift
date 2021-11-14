@@ -10,43 +10,44 @@ import SwiftUI
 public struct LineChart: View {
     var title: String
     var dataUnit: String
-    var data: [LineChartData]
-    var lineColor: Color
+    var data: [[LineChartData]]
+    var lineColors: [Color]
     var filled: Bool
 
     public init(
                 title: String,
                 dataUnit: String,
-                data: [LineChartData],
-                lineColor: Color,
+                data: [[LineChartData]],
+                lineColors: [Color],
                 filled: Bool
     ) {
         self.title = title
         self.dataUnit = dataUnit
         self.data = data
-        self.lineColor = lineColor
+        self.lineColors = lineColors
         self.filled = filled
     }
+    
+    let lineChartColors = [
+        Color.green,
+        Color.blue
+    ]
     
     public var body: some View {
         GeometryReader{ geometry in
             VStack(alignment: .leading, spacing: 8) {
-               // Group{
                 Text(title)
                     .bold()
                     .font(.largeTitle)
-//                    if (self.price != nil){
-//                        Text(self.price!)
-//                            .font(.body)
-//                        .offset(x: 5, y: 0)
-//                    }
-                //}.offset(x: 0, y: 0)
+
                 ZStack{
                     GeometryReader{ reader in
-                        LineChartLine(data: data,
-                             frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
-                        )
-                            .offset(x: 0, y: 0)
+                        ForEach(0..<self.data.count){ index in
+                            LineChartLine(data: data[index], lineColor: lineColors[index],
+                                 frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
+                            )
+                                .offset(x: 0, y: 0)
+                        }
                     }
                     .frame(width: geometry.frame(in: .local).size.width, height: 200)
                     .offset(x: 0, y: -100)
@@ -61,9 +62,8 @@ public struct LineChart: View {
 
 struct LineChart_Previews: PreviewProvider {
     static var previews: some View {
-        //LineView(data: [8,23,54,32,12,37,7,23,43], title: "Full chart")
         Group {
-            LineChart(title: "Montly Sales", dataUnit: "SEK", data: lineChartDataSet, lineColor: Color.green, filled: true)
+            LineChart(title: "Montly Sales", dataUnit: "SEK", data: lineChartDataSet, lineColors: lineChartColors, filled: true)
         }
     }
 }

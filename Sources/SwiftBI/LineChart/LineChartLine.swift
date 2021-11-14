@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LineChartLine: View {
     var data: [LineChartData]
+    var lineColor: Color
+    
     @Binding var frame: CGRect
 
     let padding:CGFloat = 30
@@ -56,7 +58,7 @@ struct LineChartLine: View {
         ZStack {
 
             self.path
-                .stroke(Color.green ,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                .stroke(lineColor ,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
                 .rotationEffect(.degrees(180), anchor: .center)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                 .drawingGroup()
