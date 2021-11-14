@@ -61,25 +61,27 @@ public struct PieChart: View {
                 .font(.largeTitle)
             ZStack {
                 GeometryReader { geometry in
-                    ZStack  {
-                        ForEach(0..<self.data.count){ i in
-                            PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: accentColors[i], separatorColor: separatorColor)
+                    VStack {
+                        ZStack  {
+                            ForEach(0..<self.data.count){ i in
+                                PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: accentColors[i], separatorColor: separatorColor)
+                            }
                         }
-                    }
-                        .gesture(DragGesture(minimumDistance: 0)
-                                .onChanged({ position in
-                                    let pieSize = geometry.frame(in: .local)
-                                    touchLocation   =   position.location
-                                    updateCurrentValue(inPie: pieSize)
-                                })
-                                .onEnded({ _ in
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        withAnimation(Animation.easeOut) {
-                                            resetValues()
+                            .gesture(DragGesture(minimumDistance: 0)
+                                    .onChanged({ position in
+                                        let pieSize = geometry.frame(in: .local)
+                                        touchLocation   =   position.location
+                                        updateCurrentValue(inPie: pieSize)
+                                    })
+                                    .onEnded({ _ in
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            withAnimation(Animation.easeOut) {
+                                                resetValues()
+                                            }
                                         }
-                                    }
-                                })
-                        )
+                                    })
+                            )
+                    }
                 }
                     .aspectRatio(contentMode: .fit)
                 VStack  {
