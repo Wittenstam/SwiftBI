@@ -62,8 +62,7 @@ public struct BarChart: View {
                                 }
                             })
                         )
-                    
-                    HStack  {
+                    VStack {
                         if currentLabel.isEmpty {
                             Text(legend)
                                 .bold()
@@ -76,10 +75,9 @@ public struct BarChart: View {
                                 .foregroundColor(.black)
                                 .padding(5)
                                 .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-//                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-//                                .animation(.easeIn)
+                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                .animation(.easeIn)
                         }
-                        
                         if !currentValue.isEmpty {
                             Text("\(currentValue) \(dataUnit)")
                                 .font(.caption)
@@ -87,14 +85,16 @@ public struct BarChart: View {
                                 .foregroundColor(.black)
                                 .padding(5)
                                 .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-//                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-//                                .animation(.easeIn)
+                                .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                .animation(.easeIn)
+                        } else {
+                            Text(currentValue)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
                         }
                     }
-                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                    .animation(.easeIn)
-                    .padding()
-                    
                 }
             }
         }
