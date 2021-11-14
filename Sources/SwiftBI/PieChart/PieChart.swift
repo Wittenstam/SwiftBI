@@ -14,13 +14,14 @@ public struct PieChart: View {
     var data: [PieChartData]
     
     var separatorColor: Color = Color.background
-    var accentColors: [Color] {
-        var colors: [Color] = [Color]()
-        for _  in 0..<data.count  {
-            colors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
-        }
-        return colors
-    }
+    var accentColors: [Color]
+//    {
+//        var colors: [Color] = [Color]()
+//        for _  in 0..<data.count  {
+//            colors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+//        }
+//        return colors
+//    }
     
     @State  private var currentValue = ""
     @State  private var currentLabel = ""
@@ -36,7 +37,10 @@ public struct PieChart: View {
         self.data = data
         
         //Uncomment the following initializer to use fully generate random colors instead of using a custom color set
-        
+        accentColors = [Color]()
+        for _  in 0..<data.count  {
+            accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+        }
         
     }
     
