@@ -120,14 +120,44 @@ public struct PieChart: View {
             .padding()
     }
 
-
+    
     func updateCurrentValue(inPie   pieSize:    CGRect)  {
         guard let angle = angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation)    else    {return}
-        let currentIndex = pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) ?? -1
-         
+       // var currentIndex = pieSlices.firstIndex(where: { $0.startDegree < angle && angle < $0.endDegree }) ?? -1
+        
+        var currentIndex = -1
+        for (index, pie) in pieSlices.enumerated() {
+                
+            if (pie.startDegree > pie.endDegree) {
+                if (angle > pie.startDegree) {
+                    if (pie.startDegree < angle && angle < 360) {
+                        currentIndex = index
+                    }
+                }
+                else {
+                    if (0 < angle && angle < pie.endDegree) {
+                        currentIndex = index
+                    }
+                }
+            }
+            else {
+                if (pie.startDegree < angle && angle < pie.endDegree) {
+                    currentIndex = index
+                }
+            }
+        }
+        
         currentLabel = data[currentIndex].label
         currentValue = "\(data[currentIndex].value)"
      }
+
+//    func updateCurrentValue(inPie   pieSize:    CGRect)  {
+//        guard let angle = angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation)    else    {return}
+//        let currentIndex = pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) ?? -1
+//
+//        currentLabel = data[currentIndex].label
+//        currentValue = "\(data[currentIndex].value)"
+//     }
     
     
     func resetValues() {
