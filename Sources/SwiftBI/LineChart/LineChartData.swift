@@ -33,7 +33,7 @@ public struct LineChartData {
 
 
 let lineChartDataSet = [
-    LineChartDataLine(label: "First", color: Color.Green, value:
+    LineChartDataLine(label: "First", color: Color.green, value:
         [
             LineChartData(label: "January", value: 340.32),
             LineChartData(label: "February", value: 250.0),
@@ -44,7 +44,7 @@ let lineChartDataSet = [
             LineChartData(label: "July", value: 365.98)
         ]
     ),
-    LineChartDataLine(label: "Second", color: Color.Blue, value:
+    LineChartDataLine(label: "Second", color: Color.blue, value:
         [
             LineChartData(label: "January", value: 250.32),
             LineChartData(label: "February", value: 360.0),
