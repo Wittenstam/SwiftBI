@@ -23,7 +23,7 @@ public struct LineChart: View {
                 title: String,
                 legend: String,
                 dataUnit: String,
-                data: [LineChartDataLine],
+                data: [LineChartDataLine]
     ) {
         self.title = title
         self.legend = legend
