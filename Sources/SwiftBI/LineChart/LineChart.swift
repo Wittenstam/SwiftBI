@@ -29,8 +29,6 @@ public struct LineChart: View {
         self.legend = legend
         self.dataUnit = dataUnit
         self.data = data
-        self.lineColors = lineColors
-        self.filled = filled
     }
     
     private var gridItemLayout = [
