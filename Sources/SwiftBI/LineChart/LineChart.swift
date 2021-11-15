@@ -121,7 +121,7 @@ public struct LineChart: View {
                         {
                             if ( selectedLineIndex == i) {
                                 HStack {
-                                    lineColors[i]
+                                    data[i].color
                                         .aspectRatio(contentMode: .fit)
                                         .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
                                         .padding(5)
@@ -133,7 +133,7 @@ public struct LineChart: View {
                             }
                             else {
                                 HStack {
-                                    lineColors[i]
+                                    data[i].color
                                         .aspectRatio(contentMode: .fit)
                                         .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
                                         .padding(5)
