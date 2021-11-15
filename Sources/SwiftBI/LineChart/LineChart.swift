@@ -13,8 +13,6 @@ public struct LineChart: View {
     var legend: String
     var dataUnit: String
     var data: [LineChartDataLine]
-    var lineColors: [Color]
-    var filled: Bool
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -26,8 +24,6 @@ public struct LineChart: View {
                 legend: String,
                 dataUnit: String,
                 data: [LineChartDataLine],
-                lineColors: [Color],
-                filled: Bool
     ) {
         self.title = title
         self.legend = legend
@@ -54,7 +50,7 @@ public struct LineChart: View {
                         ZStack{
                             GeometryReader{ reader in
                                 ForEach(0..<self.data.count){ index in
-                                    LineChartLine(data: data[index].value, lineColor: lineColors[index],
+                                    LineChartLine(data: data[index].value, lineColor: data[index].color,
                                          frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
                                     )
                                         .offset(x: 0, y: 0)
@@ -228,7 +224,7 @@ public struct LineChart: View {
 struct LineChart_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", data: lineChartDataSet, lineColors: lineChartColors, filled: true)
+            LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", data: lineChartDataSet)
         }
     }
 }

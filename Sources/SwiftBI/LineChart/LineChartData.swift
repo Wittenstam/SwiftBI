@@ -11,10 +11,12 @@ import SwiftUI
 
 public struct LineChartDataLine {
      var label: String
+     var color: Color
      var value: [LineChartData]
     
-    public init(label: String, value: [LineChartData]) {
+    public init(label: String, color: Color, value: [LineChartData]) {
         self.label = label
+        self.color = color
         self.value = value
     }
  }
@@ -31,7 +33,7 @@ public struct LineChartData {
 
 
 let lineChartDataSet = [
-    LineChartDataLine(label: "First", value:
+    LineChartDataLine(label: "First", color: Color.Green, value:
         [
             LineChartData(label: "January", value: 340.32),
             LineChartData(label: "February", value: 250.0),
@@ -42,7 +44,7 @@ let lineChartDataSet = [
             LineChartData(label: "July", value: 365.98)
         ]
     ),
-    LineChartDataLine(label: "Second", value:
+    LineChartDataLine(label: "Second", color: Color.Blue, value:
         [
             LineChartData(label: "January", value: 250.32),
             LineChartData(label: "February", value: 360.0),
@@ -53,9 +55,4 @@ let lineChartDataSet = [
             LineChartData(label: "July", value: 305.98)
         ]
     )
-]
-
-let lineChartColors = [
-    Color.green,
-    Color.blue
 ]
