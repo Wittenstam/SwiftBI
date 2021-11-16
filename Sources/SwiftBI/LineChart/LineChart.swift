@@ -18,6 +18,13 @@ public struct LineChart: View {
     @State private var currentLabel = ""
     @State private var touchLocation: CGFloat = -1
     @State private var selectedLineIndex = -1
+    
+    
+    
+    @State private var allValues = [0.0]
+    @State private var lineValues = [0.0]
+    @State private var maximumValue = 0.0
+    @State private var stepHeight: [Double] = [0.0]
 
     public init(
                 title: String,
@@ -29,13 +36,19 @@ public struct LineChart: View {
         self.legend = legend
         self.dataUnit = dataUnit
         self.data = data
+        
+        
     }
     
-    private var gridItemLayout = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+
+    
+    private var gridItemLayout:[GridItem] {
+        var items = [GridItem]()
+        for _ in data {
+            items.append(GridItem(.flexible()))
+        }
+        return items
+    }
 
     public var body: some View {
         VStack(alignment: .leading) {
@@ -48,20 +61,21 @@ public struct LineChart: View {
                         ZStack{
                             GeometryReader{ reader in
                                 ForEach(0..<self.data.count){ index in
-                                    LineChartLine(data: data[index].value, lineColor: data[index].color,
-                                         frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
-                                    )
-                                        .offset(x: 0, y: 0)
+                                        LineChartLine(
+                                            data: data,
+                                            lineIndex: index,
+                                            frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
+                                        )
+                                            .offset(x: 0, y: 0)
                                 }
+                                .offset(x: 0, y: 0) //Y: -100 100
                             }
                             .frame(width: geometry.frame(in: .local).size.width, height: 200)
-                            .offset(x: 0, y: -100)
                         }
-                        .frame(width: geometry.frame(in: .local).size.width, height: 200)
+                        //.frame(width: geometry.frame(in: .local).size.width, height: 200)
                         .gesture(DragGesture(minimumDistance: 0)
                             .onChanged({ position in
                                 let touchPosition = position.location.x/geometry.frame(in: .local).width
-                                                        
                                 touchLocation = touchPosition
                                 updateCurrentValue()
                             })
@@ -89,7 +103,7 @@ public struct LineChart: View {
                                     .offset(x: labelOffset(in: geometry.frame(in: .local).width))
                                     .animation(.easeIn)
                             }
-                            if !currentValue.isEmpty {
+                            if (!currentValue.isEmpty && currentValue != "-1.0") {
                                 Text("\(currentValue) \(dataUnit)")
                                     .font(.caption)
                                     .bold()
@@ -99,56 +113,59 @@ public struct LineChart: View {
                                     .offset(x: labelOffset(in: geometry.frame(in: .local).width))
                                     .animation(.easeIn)
                             } else {
-                                Text(currentValue)
+                                Text("")
                                     .bold()
                                     .foregroundColor(.black)
                                     .padding(5)
                                     .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
                             }
                         }
-                    }
-                }
-                LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                    ForEach(0..<data.count)   {    i in
-                        Button(action: {
-                            if ( selectedLineIndex == i) {
-                                selectedLineIndex = -1
-                            }
-                            else {
-                                selectedLineIndex = i
-                            }
-                        })
-                        {
-                            if ( selectedLineIndex == i) {
-                                HStack {
-                                    data[i].color
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
-                                        .padding(5)
-                                    Text(data[i].label)
-                                        .font(.caption)
-                                        .fontWeight(.heavy)
+                        LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
+                            ForEach(0..<data.count)   {    i in
+                                Button(action: {
+                                    if ( selectedLineIndex == i) {
+                                        selectedLineIndex = -1
+                                    }
+                                    else {
+                                        selectedLineIndex = i
+                                    }
+                                })
+                                {
+                                    if ( selectedLineIndex == i) {
+                                        HStack {
+                                            data[i].color
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
+                                                .padding(5)
+                                            Text(data[i].label)
+                                                .font(.caption)
+                                                .fontWeight(.heavy)
+                                        }
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                    }
+                                    else {
+                                        HStack {
+                                            data[i].color
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                                .padding(5)
+                                            Text(data[i].label)
+                                                .font(.caption)
+                                                .bold()
+                                        }
+                                    }
                                 }
-                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                            }
-                            else {
-                                HStack {
-                                    data[i].color
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                        .padding(5)
-                                    Text(data[i].label)
-                                        .font(.caption)
-                                        .bold()
-                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
                     }
+                   // .frame(width: geometry.frame(in: .local).size.width, height: 250)
                 }
             }
         }
     }
+        
+
     
     
     func barIsTouched(index: Int) -> Bool {

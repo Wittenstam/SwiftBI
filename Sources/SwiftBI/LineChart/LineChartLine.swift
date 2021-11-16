@@ -1,37 +1,86 @@
 //
-//  SwiftUIView.swift
+//  File.swift
 //  
 //
-//  Created by Marcus Wittenstam on 2021-11-14.
+//  Created by Marcus Wittenstam on 2021-11-16.
 //
 
 import SwiftUI
 
-struct LineChartLine: View {
-    var data: [LineChartData]
-    var lineColor: Color
+public struct LineChartLine: View {
+    
+    
+    var data: [LineChartDataLine]
+    //var data: [LineChartData]
+    var lineIndex: Int
     
     @Binding var frame: CGRect
 
     let padding:CGFloat = 30
     
-    var stepWidth: CGFloat {
-        if data.count < 2 {
+    var maximumValue: Double  {
+        var allValues: [Double]    {
+            var values = [Double]()
+            for lines in data {
+                for lineData in lines.value {
+                    values.append(lineData.value)
+                }
+            }
+            return values
+        }
+        guard let max = allValues.max() else {
+            return 1
+        }
+        return max
+    }
+    var minimumValue: Double  {
+        var allValues: [Double]    {
+            var values = [Double]()
+            for lines in data {
+                for lineData in lines.value {
+                    values.append(lineData.value)
+                }
+            }
+            return values
+        }
+        guard let max = allValues.min() else {
             return 0
         }
-        return frame.size.width / CGFloat(data.count-1)
+        return max
     }
-    var allValues: [Double]    {
+    var allValues: [Double] {
         var values = [Double]()
-        for data in data {
-            values.append(data.value)
+        for lines in data {
+            //for (index, linedata) in lines.value.enumerated() {
+            for lineData in lines.value {
+                //values.append(lineData.value)
+                values.append(normalizedValue(lineData: lineData, maxValue: maximumValue))
+            }
         }
         return values
+    }
+    var lineValues: [Double] {
+        var values = [Double]()
+        for lineData in data[lineIndex].value {
+            //values.append(lineData.value)
+            values.append(normalizedValue(lineData: lineData, maxValue: maximumValue))
+        }
+        return values
+    }
+    var stepWidth: CGFloat {
+        if data[lineIndex].value.count < 2 {
+            return 0
+        }
+        return frame.size.width / CGFloat(data[lineIndex].value.count-1)
     }
     var stepHeight: CGFloat {
         var min: Double?
         var max: Double?
-        let points = allValues
+        let points = allValues //lineValues //self.data[lineIndex].value
+//        if minDataValue != nil && maxDataValue != nil {
+//            min = minDataValue!
+//            max = maxDataValue!
+//        }else
         if let minPoint = points.min(), let maxPoint = points.max(), minPoint != maxPoint {
             min = minPoint
             max = maxPoint
@@ -42,44 +91,107 @@ struct LineChartLine: View {
             if (min <= 0){
                 return (frame.size.height-padding) / CGFloat(max - min)
             }else{
-                return (frame.size.height-padding) / CGFloat(max + min)
+                return (frame.size.height-padding) / CGFloat(max - min)
             }
         }
-        
         return 0
     }
     var path: Path {
-        let points = allValues
-        return Path.lineChart(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        let points = lineValues //self.data.onlyPoints()
+        return linePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
     }
+    var closedPath: Path {
+        let points = lineValues //self.data.onlyPoints()
+        return fillesLinePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+    }
+    
     
     public var body: some View {
-        
         ZStack {
-
-            self.path
-                .stroke(lineColor ,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
-                .rotationEffect(.degrees(180), anchor: .center)
-                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                .drawingGroup()
+            if(data[lineIndex].filled) {
+                self.closedPath
+                    .fill(data[lineIndex].color)
+                    .rotationEffect(.degrees(180), anchor: .center)
+                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                    .transition(.opacity)
+                    .animation(.easeIn(duration: 1.6))
+            }
+            else {
+                self.path
+                    .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                    .rotationEffect(.degrees(180), anchor: .center)
+                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                    .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+            }
         }
     }
-}
-
-extension Path {
     
-    static func lineChart(points:[Double], step:CGPoint) -> Path {
+    
+    
+    func linePath(points:[Double], step:CGPoint) -> Path {
         var path = Path()
-        if (points.count < 2){
+        
+        if (points.count < 2) {
             return path
         }
         guard let offset = points.min() else { return path }
-        let p1 = CGPoint(x: 0, y: CGFloat(points[0]-offset)*step.y)
-        path.move(to: p1)
-        for pointIndex in 1..<points.count {
-            let p2 = CGPoint(x: step.x * CGFloat(pointIndex), y: step.y*CGFloat(points[pointIndex]-offset))
-            path.addLine(to: p2)
+        
+//        let p1 = CGPoint(x: 0, y: CGFloat(points[0]-offset) * step.y)
+//        path.move(to: p1)
+        
+        findFirst: for pointIndex in 0 ..< points.count {
+            if points[pointIndex] != Double(-1) {
+                let firstPoint  = CGPoint(x: step.x * CGFloat(pointIndex), y: (step.y * CGFloat(points[pointIndex] )) ) //(frame.minY - points[pointIndex])  (step.y * minimumValue) +
+                path.move(to: firstPoint)
+                break findFirst
+            }
         }
+        
+        for pointIndex in 1..<points.count {
+            if points[pointIndex] != Double(-1) {
+                let nextPoint = CGPoint(x: step.x * CGFloat(pointIndex), y:  (step.y * CGFloat(points[pointIndex] )) ) //(frame.minY  - points[pointIndex])
+                path.addLine(to: nextPoint)
+            }
+        }
+        
         return path
     }
+    
+    
+    func fillesLinePath(points:[Double], step:CGPoint) -> Path {
+        
+        var path = linePath(points: points, step: step)
+
+        path.addLine(to: CGPoint(x: frame.maxX, y: frame.minY)) //minY
+        path.addLine(to: CGPoint(x: frame.minX, y: frame.minY)) //minY
+        
+        path.closeSubpath()
+        
+        return path
+    }
+    
+    
+    func normalizedValue(lineData: LineChartData, maxValue: Double) -> Double {
+//        var maximumValue = maxValue
+//        if (maximumValue == 0) {
+//            var allValues: [Double]    {
+//                var values = [Double]()
+//                for data in data.value {
+//                    values.append(data.value)
+//                }
+//                return values
+//            }
+//            guard let max = allValues.max() else {
+//                     return 1
+//            }
+//            maximumValue = max
+//        }
+        if maxValue != 0 {
+            return Double(lineData.value)/Double(maxValue)
+        } else {
+            return 1
+        }
+    }
+
+    
 }
