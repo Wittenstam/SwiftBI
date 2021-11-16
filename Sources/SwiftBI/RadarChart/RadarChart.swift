@@ -79,8 +79,6 @@ public struct RadarChart: View {
                 VStack {
                     ZStack {
                         
-                        
-                        
                         RadarChartGrid(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, categories: data.count, divisions: divisions)
                             .stroke(gridColor, lineWidth: 0.5)
 
@@ -89,7 +87,6 @@ public struct RadarChart: View {
 
                         RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
                             .stroke(dataColor, lineWidth: 2.0)
-                        
                         
                         ZStack  {
                             ForEach(0..<self.data.count){ i in

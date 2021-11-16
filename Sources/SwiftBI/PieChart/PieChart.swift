@@ -71,8 +71,9 @@ public struct PieChart: View {
             Text(title)
                 .bold()
                 .font(.largeTitle)
-            ZStack {
-                GeometryReader { geometry in
+            
+            GeometryReader { geometry in
+                ZStack {
                     VStack {
                         ZStack  {
                             ForEach(0..<self.data.count){ i in
@@ -94,28 +95,29 @@ public struct PieChart: View {
                                     })
                             )
                     }
-                }
-                    .aspectRatio(contentMode: .fit)
-                VStack  {
-                    if !currentLabel.isEmpty   {
-                        Text(currentLabel)
-                            .font(.caption)
-                            .bold()
-                            .foregroundColor(.black)
-                            .padding(10)
-                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+               
+                    //.aspectRatio(contentMode: .fit)
+                    VStack  {
+                        if !currentLabel.isEmpty   {
+                            Text(currentLabel)
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(10)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                        }
+                        
+                        if !currentValue.isEmpty {
+                            Text("\(currentValue) \(dataUnit)")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                        }
                     }
-                    
-                    if !currentValue.isEmpty {
-                        Text("\(currentValue) \(dataUnit)")
-                            .font(.caption)
-                            .bold()
-                            .foregroundColor(.black)
-                            .padding(5)
-                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                    }
+                    .padding()
                 }
-                .padding()
             }
             LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
                 ForEach(0..<data.count)   {    i in
