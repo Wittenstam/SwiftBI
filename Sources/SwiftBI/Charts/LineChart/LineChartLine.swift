@@ -135,7 +135,7 @@ public struct LineChartLine: View {
                 .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
             
 //            if (internalData[lineIndex].isSelected) {
-            if (isSelectedIndex == lineIndex) {
+            if (isSelectedIndex == lineIndex || data.count < 2) {
                 LineChartIndicatorPoint(fillColor: data[lineIndex].color)
                     .position(getClosestPointOnPath(touchLocation: touchLocation))
                     .rotationEffect(.degrees(180), anchor: .center)
