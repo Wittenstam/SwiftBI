@@ -97,19 +97,29 @@ public struct LineChartLine: View {
         return 0
     }
     var path: Path {
-        let points = lineValues //self.data.onlyPoints()
-        return linePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        let points = lineValues
+        if data[lineIndex].isCurved {
+            return curvedLinePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        }
+        else {
+            return linePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        }
     }
-    var closedPath: Path {
-        let points = lineValues //self.data.onlyPoints()
-        return fillesLinePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+    var filledPath: Path {
+        let points = lineValues
+        if data[lineIndex].isCurved {
+            return filledCurvedLinePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        }
+        else {
+            return filledLinePath(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+        }
     }
     
     
     public var body: some View {
         ZStack {
-            if(data[lineIndex].filled) {
-                self.closedPath
+            if(data[lineIndex].isFilled) {
+                self.filledPath
                     .fill(data[lineIndex].color)
                     .rotationEffect(.degrees(180), anchor: .center)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
@@ -127,14 +137,13 @@ public struct LineChartLine: View {
     }
     
     
-    
     func linePath(points:[Double], step:CGPoint) -> Path {
         var path = Path()
         
         if (points.count < 2) {
             return path
         }
-        guard let offset = points.min() else { return path }
+        //guard let offset = points.min() else { return path }
         
 //        let p1 = CGPoint(x: 0, y: CGFloat(points[0]-offset) * step.y)
 //        path.move(to: p1)
@@ -157,10 +166,54 @@ public struct LineChartLine: View {
         return path
     }
     
+    func curvedLinePath(points:[Double], step:CGPoint) -> Path {
+        var path = Path()
+        
+        if (points.count < 2) {
+            return path
+        }
+        
+        let lineRadius = 0.25 // how cruved will the lie be. between 0 and 1. 0 not at all, 1 very curved
+        var previousPoint = CGPoint(x:0, y:0)
+        
+        findFirst: for pointIndex in 0 ..< points.count {
+            if points[pointIndex] != Double(-1) {
+                let firstPoint  = CGPoint(x: step.x * CGFloat(pointIndex), y: (step.y * CGFloat(points[pointIndex] )) ) //(frame.minY - points[pointIndex])  (step.y * minimumValue) +
+                path.move(to: firstPoint)
+                previousPoint = firstPoint
+                break findFirst
+            }
+        }
+        
+        for pointIndex in 1..<points.count {
+            if points[pointIndex] != Double(-1) {
+                let nextPoint = CGPoint(x: step.x * CGFloat(pointIndex), y:  (step.y * CGFloat(points[pointIndex] )) ) //(frame.minY  - points[pointIndex])
+                let deltaX = nextPoint.x - previousPoint.x
+                let curveXOffset = deltaX * lineRadius
+                path.addCurve(to: nextPoint, control1: .init(x: previousPoint.x + curveXOffset, y: previousPoint.y), control2: .init(x: nextPoint.x - curveXOffset, y: nextPoint.y))
+                previousPoint = nextPoint
+            }
+        }
+        
+        return path
+    }
     
-    func fillesLinePath(points:[Double], step:CGPoint) -> Path {
+    
+    func filledLinePath(points:[Double], step:CGPoint) -> Path {
         
         var path = linePath(points: points, step: step)
+
+        path.addLine(to: CGPoint(x: frame.maxX, y: frame.minY)) //minY
+        path.addLine(to: CGPoint(x: frame.minX, y: frame.minY)) //minY
+        
+        path.closeSubpath()
+        
+        return path
+    }
+    
+    func filledCurvedLinePath(points:[Double], step:CGPoint) -> Path {
+        
+        var path = curvedLinePath(points: points, step: step)
 
         path.addLine(to: CGPoint(x: frame.maxX, y: frame.minY)) //minY
         path.addLine(to: CGPoint(x: frame.minX, y: frame.minY)) //minY
