@@ -77,7 +77,15 @@ public struct PieChart: View {
                     VStack {
                         ZStack  {
                             ForEach(0..<self.data.count){ i in
-                                PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: accentColors[i], separatorColor: separatorColor)
+                                PieChartSlice(
+                                    center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY),
+                                    radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY),
+                                    startDegree: pieSlices[i].startDegree,
+                                    endDegree: pieSlices[i].endDegree,
+                                    isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)),
+                                    accentColor: accentColors[i],
+                                    separatorColor: separatorColor
+                                )
                             }
                         }
                             .gesture(DragGesture(minimumDistance: 0)
@@ -166,14 +174,6 @@ public struct PieChart: View {
         currentLabel = data[currentIndex].label
         currentValue = "\(data[currentIndex].value)"
      }
-
-//    func updateCurrentValue(inPie   pieSize:    CGRect)  {
-//        guard let angle = angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation)    else    {return}
-//        let currentIndex = pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) ?? -1
-//
-//        currentLabel = data[currentIndex].label
-//        currentValue = "\(data[currentIndex].value)"
-//     }
     
     
     func resetValues() {
@@ -187,6 +187,39 @@ public struct PieChart: View {
         guard let angle =   angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation) else { return false }
         return pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) == index
     }
+    
+    func normalizedValue(index: Int, data: [PieChartData]) -> Double {
+        var total = 0.0
+        data.forEach { data in
+            total += data.value
+        }
+        
+        return data[index].value/total
+    }
+
+
+    func angleAtTouchLocation(inPie pieSize: CGRect, touchLocation: CGPoint) ->  Double?  {
+        let dx = touchLocation.x - pieSize.midX
+        let dy = touchLocation.y - pieSize.midY
+
+        let distanceToCenter = (dx * dx + dy * dy).squareRoot()
+        let radius = pieSize.width/2
+
+        guard distanceToCenter <= radius
+        else {
+            return nil
+        }
+
+        let angleAtTouchLocation = Double(atan2(dy, dx) * (180 / .pi))
+
+        if angleAtTouchLocation < 0 {
+            return (180 + angleAtTouchLocation) + 180
+        }
+        else {
+            return angleAtTouchLocation
+        }
+    }
+
     
 }
 

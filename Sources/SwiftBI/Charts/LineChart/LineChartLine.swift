@@ -11,10 +11,11 @@ public struct LineChartLine: View {
     
     
     var data: [LineChartDataLine]
-    //var data: [LineChartData]
     var lineIndex: Int
-    
+    @Binding var touchLocation: CGPoint
+    @Binding var isSelectedIndex: Int
     @Binding var frame: CGRect
+    
 
     let padding:CGFloat = 30
     
@@ -118,24 +119,36 @@ public struct LineChartLine: View {
     
     public var body: some View {
         ZStack {
-            if(data[lineIndex].isFilled) {
-                self.filledPath
+            if (data[lineIndex].isFilled) {
+                filledPath
                     .fill(data[lineIndex].color)
                     .rotationEffect(.degrees(180), anchor: .center)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                     .transition(.opacity)
-                    .animation(.easeIn(duration: 1.6))
+                    //.animation(.easeIn(duration: 1.6))
             }
-            else {
-                self.path
-                    .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+            
+            path
+                .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                .rotationEffect(.degrees(180), anchor: .center)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+            
+//            if (internalData[lineIndex].isSelected) {
+            if (isSelectedIndex == lineIndex) {
+                LineChartIndicatorPoint(fillColor: data[lineIndex].color)
+                    .position(getClosestPointOnPath(touchLocation: touchLocation))
                     .rotationEffect(.degrees(180), anchor: .center)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                    .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
             }
         }
     }
     
+    
+    func getClosestPointOnPath(touchLocation: CGPoint) -> CGPoint {
+        let closestPoint = self.path.point(to: touchLocation.x)
+        return closestPoint
+    }
     
     func linePath(points:[Double], step:CGPoint) -> Path {
         var path = Path()
@@ -248,3 +261,5 @@ public struct LineChartLine: View {
 
     
 }
+
+

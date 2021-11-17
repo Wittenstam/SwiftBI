@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+
+struct PieSlice {
+    var startDegree: Double
+    var endDegree: Double
+}
+
+
 struct PieChartSlice: View {
     var center: CGPoint
     var radius: CGFloat

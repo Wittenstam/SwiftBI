@@ -15,6 +15,11 @@ public struct LineChartDataLine {
     var isFilled: Bool
     var isCurved: Bool
     var value: [LineChartData]
+    private var _isSelected: Bool = false
+        var isSelected: Bool {
+            get { return _isSelected }
+            set { _isSelected = newValue }
+        }
     
     public init(label: String, color: Color, isFilled: Bool, isCurved: Bool, value: [LineChartData]) {
         self.label = label

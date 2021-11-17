@@ -7,19 +7,30 @@
 
 import SwiftUI
 
+
+//class LineChartDataInternal {
+//    var label: String = ""
+//    var isSelected: Bool = false
+////        var isSelected: Bool {
+////            get { return _isSelected }
+////            set { _isSelected = newValue }
+////        }
+// }
+
+
 public struct LineChart: View {
     
     var title: String
     var legend: String
     var dataUnit: String
     var data: [LineChartDataLine]
-    
+        
     @State private var currentValue = ""
     @State private var currentLabel = ""
-    @State private var touchLocation: CGFloat = -1
+    @State private var touchLocation: CGPoint = .init(x:0, y:0)
+    @State private var touchPoint: CGPoint = .init(x:0, y:0)
     @State private var selectedLineIndex = -1
-    
-    
+    @State private var isSelectedIndex = -1
     
     @State private var allValues = [0.0]
     @State private var lineValues = [0.0]
@@ -64,19 +75,23 @@ public struct LineChart: View {
                                         LineChartLine(
                                             data: data,
                                             lineIndex: index,
+                                            touchLocation: $touchPoint,
+                                            isSelectedIndex: $isSelectedIndex,
                                             frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
                                         )
                                             .offset(x: 0, y: 0)
                                 }
                                 .offset(x: 0, y: 0) //Y: -100 100
                             }
-                            .frame(width: geometry.frame(in: .local).size.width, height: 200)
+                            //.frame(width: geometry.frame(in: .local).size.width, height: 200)
                         }
-                        .frame(width: geometry.frame(in: .local).size.width, height: 200)
+                        //.frame(width: geometry.frame(in: .local).size.width, height: 200)
                         .gesture(DragGesture(minimumDistance: 0)
                             .onChanged({ position in
-                                let touchPosition = position.location.x/geometry.frame(in: .local).width
-                                touchLocation = touchPosition
+                                let touchPositionX = position.location.x/geometry.frame(in: .local).width
+                                let touchPositionY = position.location.y/geometry.frame(in: .local).height
+                                touchLocation = CGPoint(x: touchPositionX, y: touchPositionY)
+                                touchPoint = CGPoint(x: position.location.x, y: position.location.y)
                                 updateCurrentValue()
                             })
                             .onEnded({ position in
@@ -125,9 +140,11 @@ public struct LineChart: View {
                                 Button(action: {
                                     if ( selectedLineIndex == i) {
                                         selectedLineIndex = -1
+                                        isSelectedIndex = -1
                                     }
                                     else {
                                         selectedLineIndex = i
+                                        isSelectedIndex = i
                                     }
                                 })
                                 {
@@ -159,30 +176,40 @@ public struct LineChart: View {
                             }
                         }
                     }
-                    .frame(width: geometry.frame(in: .local).size.width, height: 250)
+                    //.frame(width: geometry.frame(in: .local).size.width, height: 250)
                 }
             }
         }
+//        .onAppear {
+//
+//            let intl = LineChartDataInternal()
+//            for dt in data {
+//                intl.label = dt.label
+//                intl.isSelected = false
+//                internalData.append(intl)
+//            }
+//
+//        }
     }
         
 
     
     
-    func barIsTouched(index: Int) -> Bool {
-        var touched: Bool = false
-        if (data.count > 0 && data.count < 2) {
-            touched = touchLocation > CGFloat(index)/CGFloat(data[0].value.count) && touchLocation < CGFloat(index+1)/CGFloat(data[0].value.count)
-        }
-        else if (data.count >= 2 && selectedLineIndex != -1) {
-            touched = touchLocation > CGFloat(index)/CGFloat(data[selectedLineIndex].value.count) && touchLocation < CGFloat(index+1)/CGFloat(data[selectedLineIndex].value.count)
-        }
-        return touched
-    }
+//    func barIsTouched(index: Int) -> Bool {
+//        var touched: Bool = false
+//        if (data.count > 0 && data.count < 2) {
+//            touched = touchLocation.x > CGFloat(index)/CGFloat(data[0].value.count) && touchLocation.x < CGFloat(index+1)/CGFloat(data[0].value.count)
+//        }
+//        else if (data.count >= 2 && selectedLineIndex != -1) {
+//            touched = touchLocation.x > CGFloat(index)/CGFloat(data[selectedLineIndex].value.count) && touchLocation.x < CGFloat(index+1)/CGFloat(data[selectedLineIndex].value.count)
+//        }
+//        return touched
+//    }
     
-    func updateCurrentValue()    {
+    func updateCurrentValue() {
         
         if (data.count > 0 && data.count < 2) {
-            let index = Int(touchLocation * CGFloat(data[0].value.count))
+            let index = Int(touchLocation.x * CGFloat(data[0].value.count))
             guard index < data[0].value.count && index >= 0 else {
                 currentValue = ""
                 currentLabel = ""
@@ -192,7 +219,7 @@ public struct LineChart: View {
             currentLabel = data[0].value[index].label
         }
         else if (data.count >= 2 && selectedLineIndex != -1) {
-            let index = Int(touchLocation * CGFloat(data[selectedLineIndex].value.count))
+            let index = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
             guard index < data[selectedLineIndex].value.count && index >= 0 else {
                 currentValue = ""
                 currentLabel = ""
@@ -205,7 +232,7 @@ public struct LineChart: View {
     }
     
     func resetValues() {
-        touchLocation = -1
+        touchLocation = CGPoint(x:0, y:0)
         currentValue  =  ""
         currentLabel = ""
     }
@@ -213,7 +240,7 @@ public struct LineChart: View {
     func labelOffset(in width: CGFloat) -> CGFloat {
         var position: CGFloat = 0
         if (data.count > 0 && data.count < 2) {
-            let currentIndex = Int(touchLocation * CGFloat(data[0].value.count))
+            let currentIndex = Int(touchLocation.x * CGFloat(data[0].value.count))
             guard currentIndex < data[0].value.count && currentIndex >= 0 else {
                 return 0
             }
@@ -222,7 +249,7 @@ public struct LineChart: View {
             position = cellWidth * CGFloat(currentIndex) - actualWidth/2
         }
         else if (data.count >= 2 && selectedLineIndex != -1) {
-            let currentIndex = Int(touchLocation * CGFloat(data[selectedLineIndex].value.count))
+            let currentIndex = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
             guard currentIndex < data[selectedLineIndex].value.count && currentIndex >= 0 else {
                 return 0
             }

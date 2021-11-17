@@ -180,6 +180,28 @@ public struct RadarChart: View {
         return pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) == index
     }
     
+    func angleAtTouchLocation(inPie pieSize: CGRect, touchLocation: CGPoint) ->  Double?  {
+        let dx = touchLocation.x - pieSize.midX
+        let dy = touchLocation.y - pieSize.midY
+
+        let distanceToCenter = (dx * dx + dy * dy).squareRoot()
+        let radius = pieSize.width/2
+
+        guard distanceToCenter <= radius
+        else {
+            return nil
+        }
+
+        let angleAtTouchLocation = Double(atan2(dy, dx) * (180 / .pi))
+
+        if angleAtTouchLocation < 0 {
+            return (180 + angleAtTouchLocation) + 180
+        }
+        else {
+            return angleAtTouchLocation
+        }
+    }
+    
     
 }
 
