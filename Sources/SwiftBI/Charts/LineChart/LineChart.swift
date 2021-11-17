@@ -83,9 +83,9 @@ public struct LineChart: View {
                                 }
                                 .offset(x: 0, y: 0) //Y: -100 100
                             }
-                            //.frame(width: geometry.frame(in: .local).size.width, height: 200)
+                            .frame(width: geometry.frame(in: .local).size.width, height: 200)
                         }
-                        //.frame(width: geometry.frame(in: .local).size.width, height: 200)
+                        .frame(width: geometry.frame(in: .local).size.width, height: 200)
                         .gesture(DragGesture(minimumDistance: 0)
                             .onChanged({ position in
                                 let touchPositionX = position.location.x/geometry.frame(in: .local).width
@@ -176,7 +176,7 @@ public struct LineChart: View {
                             }
                         }
                     }
-                    //.frame(width: geometry.frame(in: .local).size.width, height: 250)
+                    .frame(width: geometry.frame(in: .local).size.width, height: 250)
                 }
             }
         }
