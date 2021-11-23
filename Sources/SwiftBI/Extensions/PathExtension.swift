@@ -52,8 +52,11 @@ extension Path {
             case .quadCurve(let to, let control):
                 ret += point.quadCurve(to: to, control: control)
                 point = to
-            case .curve(let to, let control1, let control2):
-                ret += point.curve(to: to, control1: control1, control2: control2)
+            case .curve(let to, _, _):
+//            case .curve(let to, let control1, let control2):
+//                ret += point.curve(to: to, control1: control1, control2: control2)
+//                point = to
+                ret += point.line(to: to)
                 point = to
             case .closeSubpath:
                 if let to = start {
@@ -102,13 +105,21 @@ extension Path {
                 }
                 ret += point.quadCurve(to: to, control: control)
                 point = to
-            case .curve(let to, let control1, let control2):
+            case .curve(let to, _, _):
+//            case .curve(let to, let control1, let control2):
+//                if to.x > maxX {
+//                    finished = true
+//                    ret += point.curve(to: to, control1: control1, control2: control2, x: maxX)
+//                    return
+//                }
+//                ret += point.curve(to: to, control1: control1, control2: control2)
+//                point = to
                 if to.x > maxX {
                     finished = true
-                    ret += point.curve(to: to, control1: control1, control2: control2, x: maxX)
+                    ret += point.line(to: to, x: maxX)
                     return
                 }
-                ret += point.curve(to: to, control1: control1, control2: control2)
+                ret += point.line(to: to)
                 point = to
             case .closeSubpath:
                 fatalError("Can't include closeSubpath")

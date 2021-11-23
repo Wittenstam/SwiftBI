@@ -75,7 +75,7 @@ public struct LineChart: View {
                                         LineChartLine(
                                             data: data,
                                             lineIndex: index,
-                                            touchLocation: $touchPoint,
+                                            touchLocation: $touchLocation,
                                             isSelectedIndex: $isSelectedIndex,
                                             frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
                                         )
@@ -245,7 +245,7 @@ public struct LineChart: View {
                 return 0
             }
             let cellWidth = width / CGFloat(data[0].value.count)
-            let actualWidth = width -    cellWidth
+            let actualWidth = width - cellWidth
             position = cellWidth * CGFloat(currentIndex) - actualWidth/2
         }
         else if (data.count >= 2 && selectedLineIndex != -1) {
@@ -254,8 +254,8 @@ public struct LineChart: View {
                 return 0
             }
             let cellWidth = width / CGFloat(data[selectedLineIndex].value.count)
-            let actualWidth = width -    cellWidth
-            position = cellWidth * CGFloat(currentIndex) - actualWidth/2
+            let actualWidth = width - cellWidth
+            position = ( cellWidth * CGFloat(currentIndex) ) - ( actualWidth / 2 )
         }
         return position
     }

@@ -137,7 +137,8 @@ public struct LineChartLine: View {
 //            if (internalData[lineIndex].isSelected) {
             if (isSelectedIndex == lineIndex || data.count < 2) {
                 LineChartIndicatorPoint(fillColor: data[lineIndex].color)
-                    .position(getClosestPointOnPath(touchLocation: touchLocation))
+                    .position(getClosestPointOnPath())
+                    //.position(x: getNearestPositionX(), y: 1)
                     .rotationEffect(.degrees(180), anchor: .center)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
             }
@@ -145,10 +146,27 @@ public struct LineChartLine: View {
     }
     
     
-    func getClosestPointOnPath(touchLocation: CGPoint) -> CGPoint {
-        let closestPoint = self.path.point(to: touchLocation.x)
+
+    
+    func getClosestPointOnPath() -> CGPoint {
+        let touchLocationX = getNearestPositionX()
+        let closestPoint = self.path.point(to: touchLocationX)
         return closestPoint
     }
+    
+    
+    func getNearestPositionX() -> CGFloat {
+        var position: CGFloat = 0
+
+        let currentIndex = Int(touchLocation.x * CGFloat(data[lineIndex].value.count))
+        guard currentIndex < data[lineIndex].value.count && currentIndex >= 0 else {
+            return 0
+        }
+        position = ( stepWidth * CGFloat(currentIndex) )
+        
+        return position
+    }
+    
     
     func linePath(points:[Double], step:CGPoint) -> Path {
         var path = Path()
