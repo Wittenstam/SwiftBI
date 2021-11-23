@@ -19,7 +19,7 @@ struct LineChartIndicatorPoint: View {
                 .stroke(Color.background, style: StrokeStyle(lineWidth: 1))
         }
         .frame(width: 14, height: 14)
-        .shadow(color: Color.secondaryBackground, radius: 6, x: 0, y: 6)
+        //.shadow(color: Color.secondaryBackground, radius: 6, x: 0, y: 6)
     }
 }
 
