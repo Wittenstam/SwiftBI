@@ -69,6 +69,42 @@ public struct LineChart: View {
             VStack{
                 GeometryReader{ geometry in
                     VStack {
+                        
+                        VStack {
+                            if currentLabel.isEmpty {
+                                Text("") //legend
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(5)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                            } else {
+                                Text(currentLabel)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(5)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                    .animation(.easeIn)
+                            }
+                            if (!currentValue.isEmpty && currentValue != "-1.0") {
+                                Text("\(currentValue) \(dataUnit)")
+                                    .font(.caption)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(5)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                    .animation(.easeIn)
+                            } else {
+                                Text("")
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(5)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                            }
+                        }
+                            .padding(.top)
+                        
                         ZStack{
                             GeometryReader{ reader in
                                 ForEach(0..<self.data.count){ index in
@@ -102,39 +138,7 @@ public struct LineChart: View {
                                 }
                             })
                         )
-                        VStack {
-                            if currentLabel.isEmpty {
-                                Text(legend)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                            } else {
-                                Text(currentLabel)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                    .animation(.easeIn)
-                            }
-                            if (!currentValue.isEmpty && currentValue != "-1.0") {
-                                Text("\(currentValue) \(dataUnit)")
-                                    .font(.caption)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                    .animation(.easeIn)
-                            } else {
-                                Text("")
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                            }
-                        }
+                        
                         LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
                             ForEach(0..<data.count)   {    i in
                                 Button(action: {
@@ -175,36 +179,19 @@ public struct LineChart: View {
                                 .buttonStyle(PlainButtonStyle())
                             }
                         }
+                            //.padding(.top)
+                        
+                        
                     }
                     .frame(width: geometry.frame(in: .local).size.width, height: 250)
                 }
             }
         }
-//        .onAppear {
-//
-//            let intl = LineChartDataInternal()
-//            for dt in data {
-//                intl.label = dt.label
-//                intl.isSelected = false
-//                internalData.append(intl)
-//            }
-//
-//        }
+
     }
         
 
     
-    
-//    func barIsTouched(index: Int) -> Bool {
-//        var touched: Bool = false
-//        if (data.count > 0 && data.count < 2) {
-//            touched = touchLocation.x > CGFloat(index)/CGFloat(data[0].value.count) && touchLocation.x < CGFloat(index+1)/CGFloat(data[0].value.count)
-//        }
-//        else if (data.count >= 2 && selectedLineIndex != -1) {
-//            touched = touchLocation.x > CGFloat(index)/CGFloat(data[selectedLineIndex].value.count) && touchLocation.x < CGFloat(index+1)/CGFloat(data[selectedLineIndex].value.count)
-//        }
-//        return touched
-//    }
     
     func updateCurrentValue() {
         

@@ -127,14 +127,14 @@ public struct LineChartLine: View {
                     .transition(.opacity)
                     //.animation(.easeIn(duration: 1.6))
             }
+            else {
+                path
+                    .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                    .rotationEffect(.degrees(180), anchor: .center)
+                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                    .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+            }
             
-            path
-                .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
-                .rotationEffect(.degrees(180), anchor: .center)
-                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
-            
-//            if (internalData[lineIndex].isSelected) {
             if (isSelectedIndex == lineIndex || data.count < 2) {
                 LineChartIndicatorPoint(fillColor: data[lineIndex].color)
                     .position(getClosestPointOnPath())
