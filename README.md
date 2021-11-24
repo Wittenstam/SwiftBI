@@ -27,8 +27,8 @@ import SwiftBI
      ]
      
     var body: some View {
-        BarChart(title: "Monthly Sales", legend: "Month", dataUnit: "SEK", barColor: .blue, data: barChartDataSet, maxValue: 0)
-                        .frame(height: 500)
+        BarChart(title: "Monthly Sales", legend: "Month", dataUnit: "SEK", barColor: .blue, maxValue: 0, data: barChartDataSet)
+             .frame(height: 500)
     }
 ```
 
