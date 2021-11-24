@@ -2,7 +2,7 @@
  
 A SwiftUI package filled with smooth graphs for your iOS, macOS or watchOS app. 
 
-This package can easily be added to your app via Swift Package Manager by searching for SwiftBI, and then import it in your swift files.
+This package can easily be added to your app via Swift Package Manager by searching for this URL, and then import it in your swift files.
 
 
 ```swift
