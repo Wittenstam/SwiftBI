@@ -3,17 +3,20 @@
 A SwiftUI package filled with smooth graphs for your iOS, macOS or watchOS app. 
 
 All types of charts support light and dark mode, and all chart types has touch support.
+
 There are five types of charts:
-* Bar chart
-* Line chart
-* Mulit Line chart
-* Radar chart
-* Pie chart
+All images are shown with dark mode enables and simulates a user interacting with the chart by touching it and displaying the value 
 
-You can easily add this package to your app via Swift Package Manager by searching for this URL, and then importing it in your swift files.
+BarChart | LineChart | MulitLineChart | RadarChart | PieChart
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+<img width="344" alt="BarChart" src="https://user-images.githubusercontent.com/87200889/143315627-2534fbd5-a8d9-4647-aae4-1f51ee49034f.png"> | <img width="340" alt="LineChart" src="https://user-images.githubusercontent.com/87200889/143315763-fccdfce7-b961-4989-905f-f8e219816607.png"> | <img width="337" alt="MultiLineChart" src="https://user-images.githubusercontent.com/87200889/143315782-762486ec-bef4-42d0-afa0-f474fee19928.png"> | <img width="341" alt="PieChart" src="https://user-images.githubusercontent.com/87200889/143315797-1775f5b6-03a1-4c29-88ca-5a0256743e92.png"> | <img width="341" alt="RadarChart" src="https://user-images.githubusercontent.com/87200889/143315817-d930c75f-4d8c-4f2d-9828-1e9786bf31b0.png">
 
 
+
+
+You can easily add this package to your app via **Swift Package Manager** by searching for this URL, and then importing it in your swift files.
 ```swift
+
 import SwiftBI 
 ```
 
