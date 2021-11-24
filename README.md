@@ -4,13 +4,13 @@ A SwiftUI package filled with smooth graphs for your iOS, macOS or watchOS app.
 
 All types of charts support light and dark mode, and all chart types has touch support.
 There are five types of charts:
-Bar chart
-Line chart
-Mulit Line chart
-Radar chart
-Pie chart
+* Bar chart
+* Line chart
+* Mulit Line chart
+* Radar chart
+* Pie chart
 
-This package can easily be added to your app via Swift Package Manager by searching for this URL, and then import it in your swift files.
+You can easily add this package to your app via Swift Package Manager by searching for this URL, and then importing it in your swift files.
 
 
 ```swift
