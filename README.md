@@ -49,7 +49,7 @@ import SwiftBI
     ]
      
     var body: some View {
-        LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", data: singleLineChartDataSet)
+        LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", maxValue: 0, data: singleLineChartDataSet)
             .frame(height: 400)
     }
 ```
@@ -93,7 +93,7 @@ import SwiftBI
     ]
      
     var body: some View {
-        LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", data: multiLineChartDataSet)
+        LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", maxValue: 0, data: multiLineChartDataSet)
             .frame(height: 400)
     }
 ```
