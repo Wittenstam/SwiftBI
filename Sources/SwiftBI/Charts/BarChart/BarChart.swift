@@ -13,8 +13,9 @@ public struct BarChart: View {
     var legend: String
     var dataUnit: String
     var barColor: Color
-    var data: [BarChartData]
     var maxValue: Double
+    var data: [BarChartData]
+    
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -25,15 +26,15 @@ public struct BarChart: View {
                 legend: String,
                 dataUnit: String,
                 barColor: Color = .blue,
-                data: [BarChartData],
-                maxValue: Double = 0
+                maxValue: Double = 0,
+                data: [BarChartData]
     ) {
         self.title = title
         self.legend = legend
         self.dataUnit = dataUnit
         self.barColor = barColor
-        self.data = data
         self.maxValue = maxValue
+        self.data = data
     }
                                  
     public var body: some View {
@@ -114,21 +115,21 @@ public struct BarChart: View {
     
     
     func normalizedValue(index: Int, maxValue: Double) -> Double {
-        var maximumValue = maxValue
-        if (maximumValue == 0) {
-            var allValues: [Double]    {
-                var values = [Double]()
-                for data in data {
-                    values.append(data.value)
-                }
-                return values
+        
+        var allValues: [Double]    {
+            var values = [Double]()
+            for data in data {
+                values.append(data.value)
             }
-            guard let max = allValues.max() else {
-                     return 1
-            }
-            maximumValue = max
+            return values
         }
-        if maximumValue != 0 {
+        guard let max = allValues.max() else {
+                 return 1
+        }
+    
+        let maximumValue: Double = Double.maximum(maxValue, max)
+        
+        if maximumValue != Double(0) {
             return Double(data[index].value)/Double(maximumValue)
         } else {
             return 1
@@ -173,7 +174,7 @@ public struct BarChart: View {
 struct BarChart_Previews: PreviewProvider {
      static var previews: some View {
          Group {
-             BarChart(title: "Monthly Sales", legend: "Month", dataUnit: "SEK", barColor: .blue, data: barChartDataSet, maxValue: 0)
+             BarChart(title: "Monthly Sales", legend: "Month", dataUnit: "SEK", barColor: .blue, maxValue: 0, data: barChartDataSet)
          }
      }
  }

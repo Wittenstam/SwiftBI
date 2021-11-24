@@ -8,21 +8,12 @@
 import SwiftUI
 
 
-//class LineChartDataInternal {
-//    var label: String = ""
-//    var isSelected: Bool = false
-////        var isSelected: Bool {
-////            get { return _isSelected }
-////            set { _isSelected = newValue }
-////        }
-// }
-
-
 public struct LineChart: View {
     
     var title: String
     var legend: String
     var dataUnit: String
+    var maxValue: Double
     var data: [LineChartDataLine]
         
     @State private var currentValue = ""
@@ -31,24 +22,19 @@ public struct LineChart: View {
     @State private var touchPoint: CGPoint = .init(x:0, y:0)
     @State private var selectedLineIndex = -1
     @State private var isSelectedIndex = -1
-    
-    @State private var allValues = [0.0]
-    @State private var lineValues = [0.0]
-    @State private var maximumValue = 0.0
-    @State private var stepHeight: [Double] = [0.0]
 
     public init(
                 title: String,
                 legend: String,
                 dataUnit: String,
+                maxValue: Double = 0,
                 data: [LineChartDataLine]
     ) {
         self.title = title
         self.legend = legend
         self.dataUnit = dataUnit
+        self.maxValue = maxValue
         self.data = data
-        
-        
     }
     
 
@@ -103,7 +89,8 @@ public struct LineChart: View {
                                     .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
                             }
                         }
-                            .padding(.top)
+                        .padding(.top)
+                        .padding(.top)
                         
                         ZStack{
                             GeometryReader{ reader in
@@ -111,6 +98,7 @@ public struct LineChart: View {
                                         LineChartLine(
                                             data: data,
                                             lineIndex: index,
+                                            maxValue: maxValue,
                                             touchLocation: $touchLocation,
                                             isSelectedIndex: $isSelectedIndex,
                                             frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
@@ -253,7 +241,7 @@ public struct LineChart: View {
 struct LineChart_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", data: lineChartDataSet)
+            LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", maxValue: 0, data: lineChartDataSet)
         }
     }
 }

@@ -12,6 +12,7 @@ public struct LineChartLine: View {
     
     var data: [LineChartDataLine]
     var lineIndex: Int
+    var maxValue: Double
     @Binding var touchLocation: CGPoint
     @Binding var isSelectedIndex: Int
     @Binding var frame: CGRect
@@ -20,6 +21,7 @@ public struct LineChartLine: View {
     let padding:CGFloat = 30
     
     var maximumValue: Double  {
+        
         var allValues: [Double]    {
             var values = [Double]()
             for lines in data {
@@ -32,7 +34,10 @@ public struct LineChartLine: View {
         guard let max = allValues.max() else {
             return 1
         }
-        return max
+        
+        let maximumValue: Double = Double.maximum(maxValue, max)
+                
+        return maximumValue
     }
     var minimumValue: Double  {
         var allValues: [Double]    {
@@ -44,10 +49,11 @@ public struct LineChartLine: View {
             }
             return values
         }
-        guard let max = allValues.min() else {
+        guard let min = allValues.min() else {
             return 0
         }
-        return max
+        
+        return min
     }
     var allValues: [Double] {
         var values = [Double]()
@@ -77,7 +83,7 @@ public struct LineChartLine: View {
     var stepHeight: CGFloat {
         var min: Double?
         var max: Double?
-        let points = allValues //lineValues //self.data[lineIndex].value
+        let points = allValues
 //        if minDataValue != nil && maxDataValue != nil {
 //            min = minDataValue!
 //            max = maxDataValue!
@@ -90,9 +96,9 @@ public struct LineChartLine: View {
         }
         if let min = min, let max = max, min != max {
             if (min <= 0){
-                return (frame.size.height-padding) / CGFloat(max) // max - min
+                return (frame.size.height-padding) / CGFloat(1) // max - min // max
             }else{
-                return (frame.size.height-padding) / CGFloat(max) // max - min
+                return (frame.size.height-padding) / CGFloat(1) // max - min // max
             }
         }
         return 0
@@ -256,21 +262,7 @@ public struct LineChartLine: View {
     
     
     func normalizedValue(lineData: LineChartData, maxValue: Double) -> Double {
-//        var maximumValue = maxValue
-//        if (maximumValue == 0) {
-//            var allValues: [Double]    {
-//                var values = [Double]()
-//                for data in data.value {
-//                    values.append(data.value)
-//                }
-//                return values
-//            }
-//            guard let max = allValues.max() else {
-//                     return 1
-//            }
-//            maximumValue = max
-//        }
-        if maxValue != 0 {
+        if maxValue != Double(0) {
             return Double(lineData.value)/Double(maxValue)
         } else {
             return 1
