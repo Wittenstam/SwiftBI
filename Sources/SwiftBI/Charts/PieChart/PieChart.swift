@@ -141,7 +141,7 @@ public struct PieChart: View {
                 }
             }
         }
-            .padding()
+        .padding()
     }
 
     

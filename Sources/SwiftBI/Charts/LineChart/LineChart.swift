@@ -175,7 +175,7 @@ public struct LineChart: View {
                 }
             }
         }
-
+        .padding()
     }
         
 
