@@ -7,10 +7,13 @@
 
 import Foundation
 
+public class BarChartDataList: ObservableObject {
+    @Published var BarChartDataList = [BarChartData]()
+}
 
-public class BarChartData : ObservableObject {
-    @Published var label: String
-    @Published var value: Double
+class BarChartData {
+     var label: String
+     var value: Double
     
     public init(label: String, value: Double) {
         self.label = label
@@ -19,12 +22,16 @@ public class BarChartData : ObservableObject {
  }
 
 
-let barChartDataSet = [
-    BarChartData(label: "January", value: 340.32),
-    BarChartData(label: "February", value: 250.0),
-    BarChartData(label: "March", value: 430.22),
-    BarChartData(label: "April", value: 350.0),
-    BarChartData(label: "May", value: 450.0),
-    BarChartData(label: "June", value: 380.0),
-    BarChartData(label: "July", value: 365.98)
- ]
+var barChartDataSet : BarChartDataList {
+    let data : BarChartDataList = BarChartDataList()
+    
+    data.BarChartDataList.append(BarChartData(label: "January", value: 340.32))
+    data.BarChartDataList.append(BarChartData(label: "February", value: 250.0))
+    data.BarChartDataList.append(BarChartData(label: "March", value: 430.22))
+    data.BarChartDataList.append(BarChartData(label: "April", value: 350.0))
+    data.BarChartDataList.append(BarChartData(label: "May", value: 450.0))
+    data.BarChartDataList.append(BarChartData(label: "June", value: 380.0))
+    data.BarChartDataList.append(BarChartData(label: "July", value: 365.98))
+
+    return data
+}

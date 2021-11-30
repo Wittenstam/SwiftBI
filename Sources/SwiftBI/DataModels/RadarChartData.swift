@@ -7,10 +7,13 @@
 
 import Foundation
 
+public class RadarChartDataList: ObservableObject {
+    @Published var RadarChartDataList = [RadarChartData]()
+}
 
-public class RadarChartData : ObservableObject {
-    @Published var label: String
-    @Published var value: Double
+class RadarChartData {
+     var label: String
+     var value: Double
     
     public init(label: String, value: Double) {
         self.label = label
@@ -19,12 +22,16 @@ public class RadarChartData : ObservableObject {
  }
 
 
-let radarChartDataSet = [
-    RadarChartData(label: "January", value: 340.32),
-    RadarChartData(label: "February", value: 250.0),
-    RadarChartData(label: "March", value: 430.22),
-    RadarChartData(label: "April", value: 350.0),
-    RadarChartData(label: "May", value: 450.0),
-    RadarChartData(label: "June", value: 380.0),
-    RadarChartData(label: "July", value: 365.98)
-]
+var radarChartDataSet : RadarChartDataList {
+    let data : RadarChartDataList = RadarChartDataList()
+    
+    data.RadarChartDataList.append(RadarChartData(label: "January", value: 340.32))
+    data.RadarChartDataList.append(RadarChartData(label: "February", value: 250.0))
+    data.RadarChartDataList.append(RadarChartData(label: "March", value: 430.22))
+    data.RadarChartDataList.append(RadarChartData(label: "April", value: 350.0))
+    data.RadarChartDataList.append(RadarChartData(label: "May", value: 450.0))
+    data.RadarChartDataList.append(RadarChartData(label: "June", value: 380.0))
+    data.RadarChartDataList.append(RadarChartData(label: "July", value: 365.98))
+    
+    return data
+}

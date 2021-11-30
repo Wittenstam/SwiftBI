@@ -11,7 +11,7 @@ public struct PieChart: View {
      
     var title: String
     var dataUnit: String
-    var data: [PieChartData]
+    var data: PieChartDataList
     
     var separatorColor: Color = Color.background
     var accentColors: [Color]
@@ -30,7 +30,7 @@ public struct PieChart: View {
     public init(
                 title: String,
                 dataUnit: String,
-                data: [PieChartData]
+                data: PieChartDataList
     ) {
         self.title = title
         self.dataUnit = dataUnit
@@ -38,7 +38,7 @@ public struct PieChart: View {
         
         //Uncomment the following initializer to use fully generate random colors instead of using a custom color set
         accentColors = [Color]()
-        for _  in 0..<data.count  {
+        for _  in 0..<data.PieChartDataList.count  {
             accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
         }
         
@@ -48,7 +48,7 @@ public struct PieChart: View {
     
     var pieSlices: [PieSlice] {
         var slices = [PieSlice]()
-        data.enumerated().forEach {(index, data) in
+        data.PieChartDataList.enumerated().forEach {(index, data) in
             let value = normalizedValue(index: index, data: self.data)
             if slices.isEmpty    {
                 slices.append((.init(startDegree: 0, endDegree: value * 360)))
@@ -76,7 +76,7 @@ public struct PieChart: View {
                 ZStack {
                     VStack {
                         ZStack  {
-                            ForEach(0..<self.data.count){ i in
+                            ForEach(0..<self.data.PieChartDataList.count){ i in
                                 PieChartSlice(
                                     center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY),
                                     radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY),
@@ -91,7 +91,7 @@ public struct PieChart: View {
                             .gesture(DragGesture(minimumDistance: 0)
                                     .onChanged({ position in
                                         let pieSize = geometry.frame(in: .local)
-                                        touchLocation   =   position.location
+                                        touchLocation = position.location
                                         updateCurrentValue(inPie: pieSize)
                                     })
                                     .onEnded({ _ in
@@ -128,13 +128,13 @@ public struct PieChart: View {
                 }
             }
             LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
-                ForEach(0..<data.count)   {    i in
+                ForEach(0..<data.PieChartDataList.count)   {    i in
                     HStack {
                         accentColors[i]
                             .aspectRatio(contentMode: .fit)
                             .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
                             .padding(5)
-                        Text(data[i].label)
+                        Text(data.PieChartDataList[i].label)
                             .font(.caption)
                             .bold()
                     }
@@ -171,8 +171,8 @@ public struct PieChart: View {
             }
         }
         
-        currentLabel = data[currentIndex].label
-        currentValue = "\(data[currentIndex].value)"
+        currentLabel = data.PieChartDataList[currentIndex].label
+        currentValue = "\(data.PieChartDataList[currentIndex].value)"
      }
     
     
@@ -184,17 +184,20 @@ public struct PieChart: View {
     
     
     func sliceIsTouched(index: Int, inPie pieSize: CGRect) -> Bool {
-        guard let angle =   angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation) else { return false }
+        guard let angle = angleAtTouchLocation(inPie: pieSize, touchLocation: touchLocation) else { return false }
         return pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) == index
     }
     
-    func normalizedValue(index: Int, data: [PieChartData]) -> Double {
+    func normalizedValue(index: Int, data: PieChartDataList) -> Double {
         var total = 0.0
-        data.forEach { data in
+//        data { data in
+//            total += data.value
+//        }
+        for data in data.PieChartDataList {
             total += data.value
         }
         
-        return data[index].value/total
+        return data.PieChartDataList[index].value/total
     }
 
 
