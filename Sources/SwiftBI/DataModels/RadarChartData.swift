@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct RadarChartData {
+public class RadarChartData : ObservableObject {
      var label: String
      var value: Double
     
