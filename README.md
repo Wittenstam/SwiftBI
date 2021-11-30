@@ -11,16 +11,20 @@ BarChart | LineChart | MulitLineChart | RadarChart | PieChart
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 <img width="344" alt="BarChart" src="https://user-images.githubusercontent.com/87200889/143315627-2534fbd5-a8d9-4647-aae4-1f51ee49034f.png"> | <img width="340" alt="LineChart" src="https://user-images.githubusercontent.com/87200889/143315763-fccdfce7-b961-4989-905f-f8e219816607.png"> | <img width="337" alt="MultiLineChart" src="https://user-images.githubusercontent.com/87200889/143315782-762486ec-bef4-42d0-afa0-f474fee19928.png"> | <img width="341" alt="PieChart" src="https://user-images.githubusercontent.com/87200889/143315797-1775f5b6-03a1-4c29-88ca-5a0256743e92.png"> | <img width="341" alt="RadarChart" src="https://user-images.githubusercontent.com/87200889/143315817-d930c75f-4d8c-4f2d-9828-1e9786bf31b0.png">
 
+## Installation
 
+You can easily add this package to your app via **Swift Package Manager**. Just add this Swift package in Xcode using this Github repository url. (File > Add Packages...)
 
+## Author
+Marcus Wittenstam
 
-You can easily add this package to your app via **Swift Package Manager** by searching for this URL, and then importing it in your swift files.
+## Usage
 ```swift
 
 import SwiftBI 
 ```
 
-## Bar Chart
+### Bar Chart
 ```swift
     let barChartDataSet = [
          BarChartData(label: "January", value: 340.32),
@@ -43,7 +47,7 @@ import SwiftBI
     }
 ```
 
-## Line Chart
+### Line Chart
 ```swift
    let singleLineChartDataSet = [
         LineChartDataLine(label: "2021", color: Color.pink, isFilled: false, isCurved: true, value:
@@ -65,7 +69,7 @@ import SwiftBI
     }
 ```
 
-## Multi Line Chart
+### Multi Line Chart
 ```swift
    let multiLineChartDataSet = [
         LineChartDataLine(label: "2019", color: Color.green, isFilled: true, isCurved: true, value:
@@ -109,7 +113,7 @@ import SwiftBI
     }
 ```
 
-## Radar Chart
+### Radar Chart
 ```swift
     let radarChartDataSet = [
         RadarChartData(label: "January", value: 340.32),
@@ -127,7 +131,7 @@ import SwiftBI
     }
 ```
 
-## Pie Chart
+### Pie Chart
 ```swift
     let pieChartDataSet = [
         PieChartData(label: "January", value: 150.32),
