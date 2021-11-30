@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class BarChartData : ObservableObject {
+public struct BarChartData {
      var label: String
      var value: Double
     

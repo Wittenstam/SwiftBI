@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class PieChartData : ObservableObject {
+public struct PieChartData {
      var label: String
      var value: Double
     

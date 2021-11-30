@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-public class LineChartDataLine : ObservableObject {
+public struct LineChartDataLine {
     var label: String
     var color: Color
     var isFilled: Bool
