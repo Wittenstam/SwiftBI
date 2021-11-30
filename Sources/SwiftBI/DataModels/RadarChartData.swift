@@ -17,14 +17,3 @@ public struct RadarChartData {
         self.value = value
     }
  }
-
-
-let radarChartDataSet = [
-    RadarChartData(label: "January", value: 340.32),
-    RadarChartData(label: "February", value: 250.0),
-    RadarChartData(label: "March", value: 430.22),
-    RadarChartData(label: "April", value: 350.0),
-    RadarChartData(label: "May", value: 450.0),
-    RadarChartData(label: "June", value: 380.0),
-    RadarChartData(label: "July", value: 365.98)
-]

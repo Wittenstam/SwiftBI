@@ -9,9 +9,9 @@ import SwiftUI
 
 public struct PieChart: View {
      
-    var title: String
-    var dataUnit: String
-    var data: [PieChartData]
+    @Binding var title: String
+    @Binding var dataUnit: String
+    @Binding var data: [PieChartData]
     
     var separatorColor: Color = Color.background
     var accentColors: [Color]
@@ -23,25 +23,27 @@ public struct PieChart: View {
 //        return colors
 //    }
     
-    @State  private var currentValue = ""
-    @State  private var currentLabel = ""
-    @State  private var touchLocation: CGPoint = .init(x: -1, y: -1)
+    @State private var currentValue = ""
+    @State private var currentLabel = ""
+    @State private var touchLocation: CGPoint = .init(x: -1, y: -1)
     
     public init(
-                title: String,
-                dataUnit: String,
-                data: [PieChartData]
+        title: Binding<String>,
+        dataUnit: Binding<String>,
+        data: Binding<[PieChartData]>
+//        title: String,
+//        dataUnit: String,
+//        data: [PieChartData]
     ) {
-        self.title = title
-        self.dataUnit = dataUnit
-        self.data = data
-        
-        //Uncomment the following initializer to use fully generate random colors instead of using a custom color set
+        self._title = title
+        self._dataUnit = dataUnit
+        self._data = data
+
         accentColors = [Color]()
-        for _  in 0..<data.count  {
+        for _  in 0..<self.data.count  {
             accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
         }
-        
+
     }
     
     
@@ -224,9 +226,35 @@ public struct PieChart: View {
 }
 
 struct PieChart_Previews: PreviewProvider {
-     static var previews: some View {
-         Group {
-             PieChart(title: "Montly Sales", dataUnit: "SEK", data: pieChartDataSet)
-         }
+    static var previews: some View {
+        previewWrapper()
+    }
+    
+    struct previewWrapper: View {
+        @State var title: String = "Monthly Sales"
+        @State var dataUnit: String =  "SEK"
+        @State var data : [PieChartData] = [
+            PieChartData(label: "January", value: 150.32),
+            PieChartData(label: "February", value: 202.32),
+            PieChartData(label: "March", value: 390.22),
+            PieChartData(label: "April", value: 350.0),
+            PieChartData(label: "May", value: 460.33),
+            PieChartData(label: "June", value: 320.02),
+            PieChartData(label: "July", value: 50.98)
+        ]
+//        @State var pieColors = [
+//            Color.init(hex: "#2f4b7c"),
+//            Color.init(hex: "#003f5c"),
+//            Color.init(hex: "#665191"),
+//            Color.init(hex: "#a05195"),
+//            Color.init(hex: "#d45087"),
+//            Color.init(hex: "#f95d6a"),
+//            Color.init(hex: "#ff7c43"),
+//            Color.init(hex: "#ffa600")
+//       ]
+            
+        var body: some View {
+            PieChart(title: $title, dataUnit: $dataUnit, data: $data)
+        }
      }
  }

@@ -9,38 +9,38 @@ import SwiftUI
 
 public struct RadarChart: View {
 
-    var title: String
-    let gridColor: Color
-    let dataColor: Color
-    var dataUnit: String
-    var legend: String
-    var data: [RadarChartData]
-    let maxValue: Double
-    let divisions: Int
+    @Binding var title: String
+    @Binding var gridColor: Color
+    @Binding var dataColor: Color
+    @Binding var dataUnit: String
+    @Binding var legend: String
+    @Binding var data: [RadarChartData]
+    @Binding var maxValue: Double
+    @Binding var divisions: Int
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
-    @State  private var touchLocation: CGPoint = .init(x: -1, y: -1)
+    @State private var touchLocation: CGPoint = .init(x: -1, y: -1)
   
-    public init(
-                title: String,
-                gridColor: Color = .gray,
-                dataColor: Color = .purple,
-                dataUnit: String,
-                legend: String,
-                data: [RadarChartData],
-                maxValue: Double = 0,
-                divisions: Int = 10
-    ) {
-        self.title = title
-        self.gridColor = gridColor
-        self.dataColor = dataColor
-        self.dataUnit = dataUnit
-        self.legend = legend
-        self.data = data
-        self.maxValue = maxValue
-        self.divisions = divisions
-    }
+//    public init(
+//                title: String,
+//                gridColor: Color = .gray,
+//                dataColor: Color = .purple,
+//                dataUnit: String,
+//                legend: String,
+//                data: [RadarChartData],
+//                maxValue: Double = 0,
+//                divisions: Int = 10
+//    ) {
+//        self.title = title
+//        self.gridColor = gridColor
+//        self.dataColor = dataColor
+//        self.dataUnit = dataUnit
+//        self.legend = legend
+//        self.data = data
+//        self.maxValue = maxValue
+//        self.divisions = divisions
+//    }
     
     var pieSlices: [PieSlice] {
         var slices = [PieSlice]()
@@ -206,9 +206,30 @@ public struct RadarChart: View {
 }
 
 struct RadarChart_Previews: PreviewProvider {
-     static var previews: some View {
-         Group {
-             RadarChart(title: "Monthly Sales", gridColor: Color.gray, dataColor: Color.purple, dataUnit: "SEK", legend: "Month", data: radarChartDataSet, maxValue: 0, divisions: 10)
-         }
-     }
+    static var previews: some View {
+        previewWrapper()
+    }
+    
+    struct previewWrapper: View {
+        @State var title: String = "Monthly Sales"
+        @State var gridColor: Color = .gray
+        @State var dataColor: Color = .purple
+        @State var dataUnit: String = "SEK"
+        @State var legend: String =  "Month"
+        @State var data: [RadarChartData] = [
+            RadarChartData(label: "January", value: 340.32),
+            RadarChartData(label: "February", value: 250.0),
+            RadarChartData(label: "March", value: 430.22),
+            RadarChartData(label: "April", value: 350.0),
+            RadarChartData(label: "May", value: 450.0),
+            RadarChartData(label: "June", value: 380.0),
+            RadarChartData(label: "July", value: 365.98)
+        ]
+        @State var maxValue: Double = 0
+        @State var divisions: Int = 10
+        
+        var body: some View {
+            RadarChart(title: $title, gridColor: $gridColor, dataColor: $dataColor, dataUnit: $dataUnit, legend: $legend, data: $data, maxValue: $maxValue, divisions: $divisions)
+        }
+    }
  }

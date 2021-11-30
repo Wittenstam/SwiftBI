@@ -9,33 +9,33 @@ import SwiftUI
 
 public struct BarChart: View {
 
-    var title: String
-    var legend: String
-    var dataUnit: String
-    var barColor: Color
-    var maxValue: Double
-    var data: [BarChartData]
+    @Binding var title: String
+    @Binding var legend: String
+    @Binding var dataUnit: String
+    @Binding var barColor: Color
+    @Binding var maxValue: Double
+    @Binding var data: [BarChartData]
     
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
     @State private var touchLocation: CGFloat = -1
     
-    public init(
-                title: String,
-                legend: String,
-                dataUnit: String,
-                barColor: Color = .blue,
-                maxValue: Double = 0,
-                data: [BarChartData]
-    ) {
-        self.title = title
-        self.legend = legend
-        self.dataUnit = dataUnit
-        self.barColor = barColor
-        self.maxValue = maxValue
-        self.data = data
-    }
+//    public init(
+//                title: String,
+//                legend: String,
+//                dataUnit: String,
+//                barColor: Color = .blue,
+//                maxValue: Double = 0,
+//                data: [BarChartData]
+//    ) {
+//        self.title = title
+//        self.legend = legend
+//        self.dataUnit = dataUnit
+//        self.barColor = barColor
+//        self.maxValue = maxValue
+//        self.data = data
+//    }
                                  
     public var body: some View {
         VStack(alignment: .leading) {
@@ -172,9 +172,28 @@ public struct BarChart: View {
 
 
 struct BarChart_Previews: PreviewProvider {
-     static var previews: some View {
-         Group {
-             BarChart(title: "Monthly Sales", legend: "Month", dataUnit: "SEK", barColor: .blue, maxValue: 0, data: barChartDataSet)
-         }
-     }
+    static var previews: some View {
+        previewWrapper()
+    }
+    
+    struct previewWrapper: View {
+        @State var title: String = "Monthly Sales"
+        @State var legend: String =  "Month"
+        @State var dataUnit: String = "SEK"
+        @State var barColor: Color = .blue
+        @State var maxValue: Double = 0
+        @State var data: [BarChartData] = [
+            BarChartData(label: "January", value: 340.32),
+            BarChartData(label: "February", value: 250.0),
+            BarChartData(label: "March", value: 430.22),
+            BarChartData(label: "April", value: 350.0),
+            BarChartData(label: "May", value: 450.0),
+            BarChartData(label: "June", value: 380.0),
+            BarChartData(label: "July", value: 365.98)
+         ]
+         
+        var body: some View {
+            BarChart(title: $title, legend: $legend, dataUnit: $dataUnit, barColor: $barColor, maxValue: $maxValue, data: $data)
+        }
+    }
  }

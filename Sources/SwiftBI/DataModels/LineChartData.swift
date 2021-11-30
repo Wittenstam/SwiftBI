@@ -41,27 +41,4 @@ public struct LineChartData {
  }
 
 
-let lineChartDataSet = [
-    LineChartDataLine(label: "First", color: Color.green, isFilled: true, isCurved: true, value:
-        [
-            LineChartData(label: "January", value: 340.32),
-            LineChartData(label: "February", value: 250.0),
-            LineChartData(label: "March", value: 430.22),
-            LineChartData(label: "April", value: 350.0),
-            LineChartData(label: "May", value: 410.0),
-            LineChartData(label: "June", value: 110.0),
-            LineChartData(label: "July", value: 365.98)
-        ]
-    ),
-    LineChartDataLine(label: "Second", color: Color.blue, isFilled: false, isCurved: true, value:
-        [
-            LineChartData(label: "January", value: 250.32),
-            LineChartData(label: "February", value: 360.0),
-            LineChartData(label: "March", value: 290.22),
-            LineChartData(label: "April", value: 510.0),
-            LineChartData(label: "May", value: 410.0), //410.0
-            LineChartData(label: "June", value: 180.0),
-            LineChartData(label: "July", value: 305.98)
-        ]
-    )
-]
+

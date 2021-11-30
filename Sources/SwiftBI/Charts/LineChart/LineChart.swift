@@ -10,11 +10,11 @@ import SwiftUI
 
 public struct LineChart: View {
     
-    var title: String
-    var legend: String
-    var dataUnit: String
-    var maxValue: Double
-    var data: [LineChartDataLine]
+    @Binding var title: String
+    @Binding var legend: String
+    @Binding var dataUnit: String
+    @Binding var maxValue: Double
+    @Binding var data: [LineChartDataLine]
         
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -23,20 +23,20 @@ public struct LineChart: View {
     @State private var selectedLineIndex = -1
     @State private var isSelectedIndex = -1
 
-    public init(
-                title: String,
-                legend: String,
-                dataUnit: String,
-                maxValue: Double = 0,
-                data: [LineChartDataLine]
-    ) {
-        self.title = title
-        self.legend = legend
-        self.dataUnit = dataUnit
-        self.maxValue = maxValue
-        self.data = data
-    }
-    
+//    public init(
+//                title: String,
+//                legend: String,
+//                dataUnit: String,
+//                maxValue: Double = 0,
+//                data: [LineChartDataLine]
+//    ) {
+//        self.title = title
+//        self.legend = legend
+//        self.dataUnit = dataUnit
+//        self.maxValue = maxValue
+//        self.data = data
+//    }
+//
 
     
     private var gridItemLayout:[GridItem] {
@@ -240,8 +240,44 @@ public struct LineChart: View {
 
 struct LineChart_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            LineChart(title: "Montly Sales", legend: "Month", dataUnit: "SEK", maxValue: 0, data: lineChartDataSet)
+        previewWrapper()
+    }
+    
+    struct previewWrapper: View {
+        @State var title: String = "Montly Sales"
+        @State var legend: String = "Month"
+        @State var dataUnit: String =  "SEK"
+        @State var maxValue: Double = 0
+        @State var data : [LineChartDataLine] = [
+            LineChartDataLine(label: "First", color: Color.green, isFilled: true, isCurved: true, value:
+                [
+                    LineChartData(label: "January", value: 340.32),
+                    LineChartData(label: "February", value: 250.0),
+                    LineChartData(label: "March", value: 430.22),
+                    LineChartData(label: "April", value: 350.0),
+                    LineChartData(label: "May", value: 410.0),
+                    LineChartData(label: "June", value: 110.0),
+                    LineChartData(label: "July", value: 365.98)
+                ]
+            ),
+            LineChartDataLine(label: "Second", color: Color.blue, isFilled: false, isCurved: true, value:
+                [
+                    LineChartData(label: "January", value: 250.32),
+                    LineChartData(label: "February", value: 360.0),
+                    LineChartData(label: "March", value: 290.22),
+                    LineChartData(label: "April", value: 510.0),
+                    LineChartData(label: "May", value: 410.0), //410.0
+                    LineChartData(label: "June", value: 180.0),
+                    LineChartData(label: "July", value: 305.98)
+                ]
+            )
+        ]
+        
+        var body: some View {
+            LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
         }
+        
     }
 }
+
+

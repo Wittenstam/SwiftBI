@@ -18,13 +18,3 @@ public struct PieChartData {
     }
  }
 
-
-let pieChartDataSet = [
-    PieChartData(label: "January", value: 150.32),
-    PieChartData(label: "February", value: 202.32),
-    PieChartData(label: "March", value: 390.22),
-    PieChartData(label: "April", value: 350.0),
-    PieChartData(label: "May", value: 460.33),
-    PieChartData(label: "June", value: 320.02),
-    PieChartData(label: "July", value: 50.98)
-]
