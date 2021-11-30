@@ -11,7 +11,7 @@ public class RadarChartDataList: ObservableObject {
     @Published var RadarChartDataList = [RadarChartData]()
 }
 
-class RadarChartData {
+public struct RadarChartData {
      var label: String
      var value: Double
     
