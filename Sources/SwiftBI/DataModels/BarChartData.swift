@@ -9,8 +9,8 @@ import Foundation
 
 
 public class BarChartData : ObservableObject {
-    @Published var label: String
-    @Published var value: Double
+     var label: String
+     var value: Double
     
     public init(label: String, value: Double) {
         self.label = label

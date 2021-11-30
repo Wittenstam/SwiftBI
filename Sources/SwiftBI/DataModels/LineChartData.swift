@@ -10,12 +10,12 @@ import SwiftUI
 
 
 public class LineChartDataLine : ObservableObject {
-    @Published var label: String
-    @Published var color: Color
-    @Published var isFilled: Bool
-    @Published var isCurved: Bool
-    @Published var value: [LineChartData]
-    @Published private var _isSelected: Bool = false
+    var label: String
+    var color: Color
+    var isFilled: Bool
+    var isCurved: Bool
+    var value: [LineChartData]
+    private var _isSelected: Bool = false
         var isSelected: Bool {
             get { return _isSelected }
             set { _isSelected = newValue }
