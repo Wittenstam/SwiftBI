@@ -21,21 +21,21 @@ public struct BarChart: View {
     @State private var currentLabel = ""
     @State private var touchLocation: CGFloat = -1
     
-//    public init(
-//                title: String,
-//                legend: String,
-//                dataUnit: String,
-//                barColor: Color = .blue,
-//                maxValue: Double = 0,
-//                data: [BarChartData]
-//    ) {
-//        self.title = title
-//        self.legend = legend
-//        self.dataUnit = dataUnit
-//        self.barColor = barColor
-//        self.maxValue = maxValue
-//        self.data = data
-//    }
+    public init(
+                title: Binding<String>,
+                legend: Binding<String>,
+                dataUnit: Binding<String>,
+                barColor: Binding<Color>, //= .blue,
+                maxValue: Binding<Double>, //= 0,
+                data: Binding<[BarChartData]>
+    ) {
+        self._title = title
+        self._legend = legend
+        self._dataUnit = dataUnit
+        self._barColor = barColor
+        self._maxValue = maxValue
+        self._data = data
+    }
                                  
     public var body: some View {
         VStack(alignment: .leading) {

@@ -31,9 +31,6 @@ public struct PieChart: View {
         title: Binding<String>,
         dataUnit: Binding<String>,
         data: Binding<[PieChartData]>
-//        title: String,
-//        dataUnit: String,
-//        data: [PieChartData]
     ) {
         self._title = title
         self._dataUnit = dataUnit

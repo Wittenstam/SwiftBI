@@ -22,25 +22,25 @@ public struct RadarChart: View {
     @State private var currentLabel = ""
     @State private var touchLocation: CGPoint = .init(x: -1, y: -1)
   
-//    public init(
-//                title: String,
-//                gridColor: Color = .gray,
-//                dataColor: Color = .purple,
-//                dataUnit: String,
-//                legend: String,
-//                data: [RadarChartData],
-//                maxValue: Double = 0,
-//                divisions: Int = 10
-//    ) {
-//        self.title = title
-//        self.gridColor = gridColor
-//        self.dataColor = dataColor
-//        self.dataUnit = dataUnit
-//        self.legend = legend
-//        self.data = data
-//        self.maxValue = maxValue
-//        self.divisions = divisions
-//    }
+    public init(
+                title: Binding<String>,
+                gridColor: Binding<Color>, //= .gray,
+                dataColor: Binding<Color>, //= .purple,
+                dataUnit: Binding<String>,
+                legend: Binding<String>,
+                data: Binding<[RadarChartData]>,
+                maxValue: Binding<Double>,//= 0,
+                divisions: Binding<Int> //= 10
+    ) {
+        self._title = title
+        self._gridColor = gridColor
+        self._dataColor = dataColor
+        self._dataUnit = dataUnit
+        self._legend = legend
+        self._data = data
+        self._maxValue = maxValue
+        self._divisions = divisions
+    }
     
     var pieSlices: [PieSlice] {
         var slices = [PieSlice]()

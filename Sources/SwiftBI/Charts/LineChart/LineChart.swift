@@ -23,20 +23,20 @@ public struct LineChart: View {
     @State private var selectedLineIndex = -1
     @State private var isSelectedIndex = -1
 
-//    public init(
-//                title: String,
-//                legend: String,
-//                dataUnit: String,
-//                maxValue: Double = 0,
-//                data: [LineChartDataLine]
-//    ) {
-//        self.title = title
-//        self.legend = legend
-//        self.dataUnit = dataUnit
-//        self.maxValue = maxValue
-//        self.data = data
-//    }
-//
+    public init(
+                title: Binding<String>,
+                legend: Binding<String>,
+                dataUnit: Binding<String>,
+                maxValue: Binding<Double>, //= 0,
+                data: Binding<[LineChartDataLine]>
+    ) {
+        self._title = title
+        self._legend = legend
+        self._dataUnit = dataUnit
+        self._maxValue = maxValue
+        self._data = data
+    }
+
 
     
     private var gridItemLayout:[GridItem] {
