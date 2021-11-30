@@ -14,7 +14,7 @@ public struct LineChart: View {
     var legend: String
     var dataUnit: String
     var maxValue: Double
-    var data: LineChartDataLineList
+    var data: [LineChartDataLine]
         
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -28,7 +28,7 @@ public struct LineChart: View {
                 legend: String,
                 dataUnit: String,
                 maxValue: Double = 0,
-                data: LineChartDataLineList
+                data: [LineChartDataLine]
     ) {
         self.title = title
         self.legend = legend
@@ -41,7 +41,7 @@ public struct LineChart: View {
     
     private var gridItemLayout:[GridItem] {
         var items = [GridItem]()
-        for _ in data.LineChartDataLineList {
+        for _ in data {
             items.append(GridItem(.flexible()))
         }
         return items
@@ -94,9 +94,9 @@ public struct LineChart: View {
                         
                         ZStack{
                             GeometryReader{ reader in
-                                ForEach(0..<self.data.LineChartDataLineList.count){ index in
+                                ForEach(0..<self.data.count){ index in
                                         LineChartLine(
-                                            data: data.LineChartDataLineList,
+                                            data: data,
                                             lineIndex: index,
                                             maxValue: maxValue,
                                             touchLocation: $touchLocation,
@@ -128,7 +128,7 @@ public struct LineChart: View {
                         )
                         
                         LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                            ForEach(0..<data.LineChartDataLineList.count)   {    i in
+                            ForEach(0..<data.count)   {    i in
                                 Button(action: {
                                     if ( selectedLineIndex == i) {
                                         selectedLineIndex = -1
@@ -142,11 +142,11 @@ public struct LineChart: View {
                                 {
                                     if ( selectedLineIndex == i) {
                                         HStack {
-                                            data.LineChartDataLineList[i].color
+                                            data[i].color
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
                                                 .padding(5)
-                                            Text(data.LineChartDataLineList[i].label)
+                                            Text(data[i].label)
                                                 .font(.caption)
                                                 .fontWeight(.heavy)
                                         }
@@ -154,11 +154,11 @@ public struct LineChart: View {
                                     }
                                     else {
                                         HStack {
-                                            data.LineChartDataLineList[i].color
+                                            data[i].color
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
                                                 .padding(5)
-                                            Text(data.LineChartDataLineList[i].label)
+                                            Text(data[i].label)
                                                 .font(.caption)
                                                 .bold()
                                         }
@@ -183,25 +183,25 @@ public struct LineChart: View {
     
     func updateCurrentValue() {
         
-        if (data.LineChartDataLineList.count > 0 && data.LineChartDataLineList.count < 2) {
-            let index = Int(touchLocation.x * CGFloat(data.LineChartDataLineList[0].value.count))
-            guard index < data.LineChartDataLineList[0].value.count && index >= 0 else {
+        if (data.count > 0 && data.count < 2) {
+            let index = Int(touchLocation.x * CGFloat(data[0].value.count))
+            guard index < data[0].value.count && index >= 0 else {
                 currentValue = ""
                 currentLabel = ""
                 return
             }
-            currentValue = "\(data.LineChartDataLineList[0].value[index].value)"
-            currentLabel = data.LineChartDataLineList[0].value[index].label
+            currentValue = "\(data[0].value[index].value)"
+            currentLabel = data[0].value[index].label
         }
-        else if (data.LineChartDataLineList.count >= 2 && selectedLineIndex != -1) {
-            let index = Int(touchLocation.x * CGFloat(data.LineChartDataLineList[selectedLineIndex].value.count))
-            guard index < data.LineChartDataLineList[selectedLineIndex].value.count && index >= 0 else {
+        else if (data.count >= 2 && selectedLineIndex != -1) {
+            let index = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
+            guard index < data[selectedLineIndex].value.count && index >= 0 else {
                 currentValue = ""
                 currentLabel = ""
                 return
             }
-            currentValue = "\(data.LineChartDataLineList[selectedLineIndex].value[index].value)"
-            currentLabel = data.LineChartDataLineList[selectedLineIndex].value[index].label
+            currentValue = "\(data[selectedLineIndex].value[index].value)"
+            currentLabel = data[selectedLineIndex].value[index].label
         }
         
     }
@@ -214,21 +214,21 @@ public struct LineChart: View {
     
     func labelOffset(in width: CGFloat) -> CGFloat {
         var position: CGFloat = 0
-        if (data.LineChartDataLineList.count > 0 && data.LineChartDataLineList.count < 2) {
-            let currentIndex = Int(touchLocation.x * CGFloat(data.LineChartDataLineList[0].value.count))
-            guard currentIndex < data.LineChartDataLineList[0].value.count && currentIndex >= 0 else {
+        if (data.count > 0 && data.count < 2) {
+            let currentIndex = Int(touchLocation.x * CGFloat(data[0].value.count))
+            guard currentIndex < data[0].value.count && currentIndex >= 0 else {
                 return 0
             }
-            let cellWidth = width / CGFloat(data.LineChartDataLineList[0].value.count)
+            let cellWidth = width / CGFloat(data[0].value.count)
             let actualWidth = width - cellWidth
             position = cellWidth * CGFloat(currentIndex) - actualWidth/2
         }
-        else if (data.LineChartDataLineList.count >= 2 && selectedLineIndex != -1) {
-            let currentIndex = Int(touchLocation.x * CGFloat(data.LineChartDataLineList[selectedLineIndex].value.count))
-            guard currentIndex < data.LineChartDataLineList[selectedLineIndex].value.count && currentIndex >= 0 else {
+        else if (data.count >= 2 && selectedLineIndex != -1) {
+            let currentIndex = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
+            guard currentIndex < data[selectedLineIndex].value.count && currentIndex >= 0 else {
                 return 0
             }
-            let cellWidth = width / CGFloat(data.LineChartDataLineList[selectedLineIndex].value.count)
+            let cellWidth = width / CGFloat(data[selectedLineIndex].value.count)
             let actualWidth = width - cellWidth
             position = ( cellWidth * CGFloat(currentIndex) ) - ( actualWidth / 2 )
         }

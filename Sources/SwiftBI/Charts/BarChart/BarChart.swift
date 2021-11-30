@@ -14,7 +14,7 @@ public struct BarChart: View {
     var dataUnit: String
     var barColor: Color
     var maxValue: Double
-    var data: BarChartDataList
+    var data: [BarChartData]
     
     
     @State private var currentValue = ""
@@ -27,7 +27,7 @@ public struct BarChart: View {
                 dataUnit: String,
                 barColor: Color = .blue,
                 maxValue: Double = 0,
-                data: BarChartDataList
+                data: [BarChartData]
     ) {
         self.title = title
         self.legend = legend
@@ -82,7 +82,7 @@ public struct BarChart: View {
                     }
                     
                     HStack {
-                        ForEach(0..<data.BarChartDataList.count, id: \.self) { i in
+                        ForEach(0..<data.count, id: \.self) { i in
                             BarChartCell(value: normalizedValue(index: i, maxValue: maxValue), barColor: barColor)
                                 .opacity(barIsTouched(index: i) ? 1 : 0.55)
                                 .scaleEffect(barIsTouched(index: i) ? CGSize(width: 1.05, height: 1) : CGSize(width: 1, height: 1), anchor: .bottom)
@@ -118,7 +118,7 @@ public struct BarChart: View {
         
         var allValues: [Double]    {
             var values = [Double]()
-            for data in data.BarChartDataList {
+            for data in data {
                 values.append(data.value)
             }
             return values
@@ -130,25 +130,25 @@ public struct BarChart: View {
         let maximumValue: Double = Double.maximum(maxValue, max)
         
         if maximumValue != Double(0) {
-            return Double(data.BarChartDataList[index].value)/Double(maximumValue)
+            return Double(data[index].value)/Double(maximumValue)
         } else {
             return 1
         }
     }
     
     func barIsTouched(index: Int) -> Bool {
-        touchLocation > CGFloat(index)/CGFloat(data.BarChartDataList.count) && touchLocation < CGFloat(index+1)/CGFloat(data.BarChartDataList.count)
+        touchLocation > CGFloat(index)/CGFloat(data.count) && touchLocation < CGFloat(index+1)/CGFloat(data.count)
     }
     
     func updateCurrentValue()    {
-        let index = Int(touchLocation * CGFloat(data.BarChartDataList.count))
-        guard index < data.BarChartDataList.count && index >= 0 else {
+        let index = Int(touchLocation * CGFloat(data.count))
+        guard index < data.count && index >= 0 else {
             currentValue = ""
             currentLabel = ""
             return
         }
-        currentValue = "\(data.BarChartDataList[index].value)"
-        currentLabel = data.BarChartDataList[index].label
+        currentValue = "\(data[index].value)"
+        currentLabel = data[index].label
     }
     
     func resetValues() {
@@ -158,11 +158,11 @@ public struct BarChart: View {
     }
     
     func labelOffset(in width: CGFloat) -> CGFloat {
-        let currentIndex = Int(touchLocation * CGFloat(data.BarChartDataList.count))
-        guard currentIndex < data.BarChartDataList.count && currentIndex >= 0 else {
+        let currentIndex = Int(touchLocation * CGFloat(data.count))
+        guard currentIndex < data.count && currentIndex >= 0 else {
             return 0
         }
-        let cellWidth = width / CGFloat(data.BarChartDataList.count)
+        let cellWidth = width / CGFloat(data.count)
         let actualWidth = width -    cellWidth
         let position = cellWidth * CGFloat(currentIndex) - actualWidth/2
         return position

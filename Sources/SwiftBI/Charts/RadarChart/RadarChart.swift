@@ -14,7 +14,7 @@ public struct RadarChart: View {
     let dataColor: Color
     var dataUnit: String
     var legend: String
-    var data: RadarChartDataList
+    var data: [RadarChartData]
     let maxValue: Double
     let divisions: Int
     
@@ -28,7 +28,7 @@ public struct RadarChart: View {
                 dataColor: Color = .purple,
                 dataUnit: String,
                 legend: String,
-                data: RadarChartDataList,
+                data: [RadarChartData],
                 maxValue: Double = 0,
                 divisions: Int = 10
     ) {
@@ -44,8 +44,8 @@ public struct RadarChart: View {
     
     var pieSlices: [PieSlice] {
         var slices = [PieSlice]()
-        let value = Double(360) / Double(data.RadarChartDataList.count)
-        data.RadarChartDataList.enumerated().forEach {(index, data) in
+        let value = Double(360) / Double(data.count)
+        data.enumerated().forEach {(index, data) in
             //let radius = min(rect.maxX - rect.midX, rect.maxY - rect.midY)
             
             if slices.isEmpty {
@@ -79,24 +79,24 @@ public struct RadarChart: View {
                 VStack {
                     ZStack {
                         
-                        RadarChartGrid(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, categories: data.RadarChartDataList.count, divisions: divisions)
+                        RadarChartGrid(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, categories: data.count, divisions: divisions)
                             .stroke(gridColor, lineWidth: 0.5)
 
-                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data.RadarChartDataList, maxValue: maxValue)
+                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
                             .fill(dataColor.opacity(0.3))
 
-                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data.RadarChartDataList, maxValue: maxValue)
+                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
                             .stroke(dataColor, lineWidth: 2.0)
                         
                         ZStack  {
-                            ForEach(0..<self.data.RadarChartDataList.count){ i in
+                            ForEach(0..<self.data.count){ i in
                                 PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: gridColor.opacity(0.001))
                             }
                         }
                             .gesture(DragGesture(minimumDistance: 0)
                                     .onChanged({ position in
                                         let pieSize = geometry.frame(in: .local)
-                                        touchLocation = position.location
+                                        touchLocation   =   position.location
                                         updateCurrentValue(inPie: pieSize)
                                     })
                                     .onEnded({ _ in
@@ -163,8 +163,8 @@ public struct RadarChart: View {
             }
         }
         
-        currentLabel = data.RadarChartDataList[currentIndex].label
-        currentValue = "\(data.RadarChartDataList[currentIndex].value)"
+        currentLabel = data[currentIndex].label
+        currentValue = "\(data[currentIndex].value)"
      }
 
     

@@ -7,13 +7,10 @@
 
 import Foundation
 
-public class PieChartDataList: ObservableObject {
-    @Published var PieChartDataList = [PieChartData]()
-}
 
-class PieChartData {
-     var label: String
-     var value: Double
+public class PieChartData : ObservableObject {
+    @Published var label: String
+    @Published var value: Double
     
     public init(label: String, value: Double) {
         self.label = label
@@ -22,16 +19,12 @@ class PieChartData {
  }
 
 
-var pieChartDataSet : PieChartDataList {
-    let data : PieChartDataList = PieChartDataList()
-    
-    data.PieChartDataList.append(PieChartData(label: "January", value: 150.32))
-    data.PieChartDataList.append(PieChartData(label: "February", value: 202.32))
-    data.PieChartDataList.append(PieChartData(label: "March", value: 390.22))
-    data.PieChartDataList.append(PieChartData(label: "April", value: 350.0))
-    data.PieChartDataList.append(PieChartData(label: "May", value: 460.33))
-    data.PieChartDataList.append(PieChartData(label: "June", value: 320.02))
-    data.PieChartDataList.append(PieChartData(label: "July", value: 50.98))
-                                 
-    return data
-}
+let pieChartDataSet = [
+    PieChartData(label: "January", value: 150.32),
+    PieChartData(label: "February", value: 202.32),
+    PieChartData(label: "March", value: 390.22),
+    PieChartData(label: "April", value: 350.0),
+    PieChartData(label: "May", value: 460.33),
+    PieChartData(label: "June", value: 320.02),
+    PieChartData(label: "July", value: 50.98)
+]
