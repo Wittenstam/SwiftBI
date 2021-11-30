@@ -12,7 +12,7 @@ public class LineChartDataLineList: ObservableObject {
     @Published var LineChartDataLineList = [LineChartDataLine]()
 }
 
-public struct LineChartDataLine {
+struct LineChartDataLine {
     var label: String
     var color: Color
     var isFilled: Bool
@@ -67,22 +67,9 @@ var lineChartDataSet : LineChartDataLineList {
                 LineChartData(label: "February", value: 360.0),
                 LineChartData(label: "March", value: 290.22),
                 LineChartData(label: "April", value: 510.0),
-                LineChartData(label: "May", value: 410.0),
+                LineChartData(label: "May", value: 410.0), //410.0
                 LineChartData(label: "June", value: 180.0),
                 LineChartData(label: "July", value: 305.98)
-            ]
-        )
-    )
-    data.LineChartDataLineList.append(
-        LineChartDataLine(label: "Second", color: Color.blue, isFilled: false, isCurved: true, value:
-            [
-                LineChartData(label: "January", value: 290.32),
-                LineChartData(label: "February", value: 310),
-                LineChartData(label: "March", value: 240),
-                LineChartData(label: "April", value: 480),
-                LineChartData(label: "May", value: 460),
-                LineChartData(label: "June", value: 290),
-                LineChartData(label: "July", value: 430)
             ]
         )
     )

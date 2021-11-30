@@ -11,7 +11,7 @@ public class PieChartDataList: ObservableObject {
     @Published var PieChartDataList = [PieChartData]()
 }
 
-public struct PieChartData {
+class PieChartData {
      var label: String
      var value: Double
     

@@ -11,7 +11,7 @@ public class BarChartDataList: ObservableObject {
     @Published var BarChartDataList = [BarChartData]()
 }
 
-public struct BarChartData {
+class BarChartData {
      var label: String
      var value: Double
     
