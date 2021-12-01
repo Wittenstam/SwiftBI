@@ -13,8 +13,9 @@ public struct PieChart: View {
     @Binding var dataUnit: String
     @Binding var data: [PieChartData]
     
+    
     var separatorColor: Color = Color.background
-    var accentColors: [Color]
+    @State var accentColors = [Color]()
 //    {
 //        var colors: [Color] = [Color]()
 //        for _  in 0..<data.count  {
@@ -22,6 +23,7 @@ public struct PieChart: View {
 //        }
 //        return colors
 //    }
+    @State private var pieSlices = [PieSlice]()
     
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -36,27 +38,29 @@ public struct PieChart: View {
         self._dataUnit = dataUnit
         self._data = data
 
-        accentColors = [Color]()
-        for _  in 0..<self.data.count  {
-            accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
-        }
+//        self.accentColors = [Color]()
+//        for _  in 0..<data.count  {
+//            self.accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+//        }
+//
+
 
     }
     
     
     
-    var pieSlices: [PieSlice] {
-        var slices = [PieSlice]()
-        data.enumerated().forEach {(index, data) in
-            let value = normalizedValue(index: index, data: self.data)
-            if slices.isEmpty    {
-                slices.append((.init(startDegree: 0, endDegree: value * 360)))
-            } else {
-                slices.append(.init(startDegree: slices.last!.endDegree,    endDegree: (value * 360 + slices.last!.endDegree)))
-            }
-        }
-        return slices
-    }
+//    var pieSlices: [PieSlice] {
+//        var slices = [PieSlice]()
+//        data.enumerated().forEach {(index, data) in
+//            let value = normalizedValue(index: index, data: self.data)
+//            if slices.isEmpty    {
+//                slices.append((.init(startDegree: 0, endDegree: value * 360)))
+//            } else {
+//                slices.append(.init(startDegree: slices.last!.endDegree,    endDegree: (value * 360 + slices.last!.endDegree)))
+//            }
+//        }
+//        return slices
+//    }
     
     private var gridItemLayout = [
         GridItem(.flexible()),
@@ -143,6 +147,34 @@ public struct PieChart: View {
             }
         }
         .padding()
+        .onAppear{
+            for _  in 0..<data.count  {
+                self.accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+            }
+    
+            data.enumerated().forEach {(index, data) in
+                let value = normalizedValue(index: index, data: self.data)
+                if pieSlices.isEmpty    {
+                    pieSlices.append((.init(startDegree: 0, endDegree: value * 360)))
+                } else {
+                    pieSlices.append(.init(startDegree: pieSlices.last!.endDegree,    endDegree: (value * 360 + pieSlices.last!.endDegree)))
+                }
+            }
+        }
+        .onChange(of: data){ newValue in
+            for _  in 0..<data.count  {
+                self.accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+            }
+    
+            data.enumerated().forEach {(index, data) in
+                let value = normalizedValue(index: index, data: self.data)
+                if pieSlices.isEmpty    {
+                    pieSlices.append((.init(startDegree: 0, endDegree: value * 360)))
+                } else {
+                    pieSlices.append(.init(startDegree: pieSlices.last!.endDegree,    endDegree: (value * 360 + pieSlices.last!.endDegree)))
+                }
+            }
+        }
     }
 
     
