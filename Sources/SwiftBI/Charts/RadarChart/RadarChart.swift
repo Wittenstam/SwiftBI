@@ -70,64 +70,66 @@ public struct RadarChart: View {
   
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .bold()
-                .font(.largeTitle)
-//            Text("Current value: \(currentValue) \(dataUnit)")
-//                .font(.headline)
-            GeometryReader { geometry in
-                VStack {
-                    ZStack {
-                        
-                        RadarChartGrid(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, categories: data.count, divisions: divisions)
-                            .stroke(gridColor, lineWidth: 0.5)
-
-                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
-                            .fill(dataColor.opacity(0.3))
-
-                        RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
-                            .stroke(dataColor, lineWidth: 2.0)
-                        
-                        ZStack  {
-                            ForEach(0..<self.data.count){ i in
-                                PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: gridColor.opacity(0.001))
-                            }
-                        }
-                            .gesture(DragGesture(minimumDistance: 0)
-                                    .onChanged({ position in
-                                        let pieSize = geometry.frame(in: .local)
-                                        touchLocation   =   position.location
-                                        updateCurrentValue(inPie: pieSize)
-                                    })
-                                    .onEnded({ _ in
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            withAnimation(Animation.easeOut) {
-                                                resetValues()
-                                            }
-                                        }
-                                    })
-                            )
-                        
-                        VStack  {
-                            if !currentLabel.isEmpty   {
-                                Text(currentLabel)
-                                    .font(.caption)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(10)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                            }
+            if (!data.isEmpty) {
+                Text(title)
+                    .bold()
+                    .font(.largeTitle)
+    //            Text("Current value: \(currentValue) \(dataUnit)")
+    //                .font(.headline)
+                GeometryReader { geometry in
+                    VStack {
+                        ZStack {
                             
-                            if !currentValue.isEmpty {
-                                Text("\(currentValue) \(dataUnit)")
-                                    .font(.caption)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                            RadarChartGrid(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, categories: data.count, divisions: divisions)
+                                .stroke(gridColor, lineWidth: 0.5)
+
+                            RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
+                                .fill(dataColor.opacity(0.3))
+
+                            RadarChartPath(maxX: geometry.frame(in: .local).maxX, midX: geometry.frame(in: .local).midX, maxY: geometry.frame(in: .local).maxY, midY: geometry.frame(in: .local).midY, data: data, maxValue: maxValue)
+                                .stroke(dataColor, lineWidth: 2.0)
+                            
+                            ZStack  {
+                                ForEach(0..<self.data.count){ i in
+                                    PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: gridColor.opacity(0.001))
+                                }
                             }
+                                .gesture(DragGesture(minimumDistance: 0)
+                                        .onChanged({ position in
+                                            let pieSize = geometry.frame(in: .local)
+                                            touchLocation   =   position.location
+                                            updateCurrentValue(inPie: pieSize)
+                                        })
+                                        .onEnded({ _ in
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                withAnimation(Animation.easeOut) {
+                                                    resetValues()
+                                                }
+                                            }
+                                        })
+                                )
+                            
+                            VStack  {
+                                if !currentLabel.isEmpty   {
+                                    Text(currentLabel)
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(10)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                }
+                                
+                                if !currentValue.isEmpty {
+                                    Text("\(currentValue) \(dataUnit)")
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                }
+                            }
+                            .padding()
                         }
-                        .padding()
                     }
                 }
             }

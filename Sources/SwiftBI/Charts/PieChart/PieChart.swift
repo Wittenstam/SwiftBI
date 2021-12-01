@@ -67,75 +67,77 @@ public struct PieChart: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .bold()
-                .font(.largeTitle)
-            
-            GeometryReader { geometry in
-                ZStack {
-                    VStack {
-                        ZStack  {
-                            ForEach(0..<self.data.count){ i in
-                                PieChartSlice(
-                                    center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY),
-                                    radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY),
-                                    startDegree: pieSlices[i].startDegree,
-                                    endDegree: pieSlices[i].endDegree,
-                                    isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)),
-                                    accentColor: accentColors[i],
-                                    separatorColor: separatorColor
+            if (!data.isEmpty) {
+                Text(title)
+                    .bold()
+                    .font(.largeTitle)
+                
+                GeometryReader { geometry in
+                    ZStack {
+                        VStack {
+                            ZStack  {
+                                ForEach(0..<self.data.count){ i in
+                                    PieChartSlice(
+                                        center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY),
+                                        radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY),
+                                        startDegree: pieSlices[i].startDegree,
+                                        endDegree: pieSlices[i].endDegree,
+                                        isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)),
+                                        accentColor: accentColors[i],
+                                        separatorColor: separatorColor
+                                    )
+                                }
+                            }
+                                .gesture(DragGesture(minimumDistance: 0)
+                                        .onChanged({ position in
+                                            let pieSize = geometry.frame(in: .local)
+                                            touchLocation   =   position.location
+                                            updateCurrentValue(inPie: pieSize)
+                                        })
+                                        .onEnded({ _ in
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                withAnimation(Animation.easeOut) {
+                                                    resetValues()
+                                                }
+                                            }
+                                        })
                                 )
+                        }
+                   
+                        //.aspectRatio(contentMode: .fit)
+                        VStack  {
+                            if !currentLabel.isEmpty   {
+                                Text(currentLabel)
+                                    .font(.caption)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(10)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                            }
+                            
+                            if !currentValue.isEmpty {
+                                Text("\(currentValue) \(dataUnit)")
+                                    .font(.caption)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(5)
+                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
                             }
                         }
-                            .gesture(DragGesture(minimumDistance: 0)
-                                    .onChanged({ position in
-                                        let pieSize = geometry.frame(in: .local)
-                                        touchLocation   =   position.location
-                                        updateCurrentValue(inPie: pieSize)
-                                    })
-                                    .onEnded({ _ in
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            withAnimation(Animation.easeOut) {
-                                                resetValues()
-                                            }
-                                        }
-                                    })
-                            )
+                        .padding()
                     }
-               
-                    //.aspectRatio(contentMode: .fit)
-                    VStack  {
-                        if !currentLabel.isEmpty   {
-                            Text(currentLabel)
-                                .font(.caption)
-                                .bold()
-                                .foregroundColor(.black)
-                                .padding(10)
-                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                        }
-                        
-                        if !currentValue.isEmpty {
-                            Text("\(currentValue) \(dataUnit)")
-                                .font(.caption)
-                                .bold()
-                                .foregroundColor(.black)
-                                .padding(5)
-                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                        }
-                    }
-                    .padding()
                 }
-            }
-            LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
-                ForEach(0..<data.count)   {    i in
-                    HStack {
-                        accentColors[i]
-                            .aspectRatio(contentMode: .fit)
-                            .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                            .padding(5)
-                        Text(data[i].label)
-                            .font(.caption)
-                            .bold()
+                LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
+                    ForEach(0..<data.count)   {    i in
+                        HStack {
+                            accentColors[i]
+                                .aspectRatio(contentMode: .fit)
+                                .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                .padding(5)
+                            Text(data[i].label)
+                                .font(.caption)
+                                .bold()
+                        }
                     }
                 }
             }

@@ -49,129 +49,131 @@ public struct LineChart: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .bold()
-                .font(.largeTitle)
-            VStack{
-                GeometryReader{ geometry in
-                    VStack {
-                        
+            if (!data.isEmpty) {
+                Text(title)
+                    .bold()
+                    .font(.largeTitle)
+                VStack{
+                    GeometryReader{ geometry in
                         VStack {
-                            if currentLabel.isEmpty {
-                                Text("") //legend
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                            } else {
-                                Text(currentLabel)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                    .animation(.easeIn)
-                            }
-                            if (!currentValue.isEmpty && currentValue != "-1.0") {
-                                Text("\(currentValue) \(dataUnit)")
-                                    .font(.caption)
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
-                                    .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                    .animation(.easeIn)
-                            } else {
-                                Text("")
-                                    .bold()
-                                    .foregroundColor(.black)
-                                    .padding(5)
-                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                            }
-                        }
-                        .padding(.top)
-                        .padding(.top)
-                        
-                        ZStack{
-                            GeometryReader{ reader in
-                                ForEach(0..<self.data.count){ index in
-                                        LineChartLine(
-                                            data: data,
-                                            lineIndex: index,
-                                            maxValue: maxValue,
-                                            touchLocation: $touchLocation,
-                                            isSelectedIndex: $isSelectedIndex,
-                                            frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
-                                        )
-                                            .offset(x: 0, y: 0)
+                            
+                            VStack {
+                                if currentLabel.isEmpty {
+                                    Text("") //legend
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                } else {
+                                    Text(currentLabel)
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                        .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                        .animation(.easeIn)
                                 }
-                                .offset(x: 0, y: 0) //Y: -100 100
+                                if (!currentValue.isEmpty && currentValue != "-1.0") {
+                                    Text("\(currentValue) \(dataUnit)")
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
+                                        .offset(x: labelOffset(in: geometry.frame(in: .local).width))
+                                        .animation(.easeIn)
+                                } else {
+                                    Text("")
+                                        .bold()
+                                        .foregroundColor(.black)
+                                        .padding(5)
+                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                }
+                            }
+                            .padding(.top)
+                            .padding(.top)
+                            
+                            ZStack{
+                                GeometryReader{ reader in
+                                    ForEach(0..<self.data.count){ index in
+                                            LineChartLine(
+                                                data: data,
+                                                lineIndex: index,
+                                                maxValue: maxValue,
+                                                touchLocation: $touchLocation,
+                                                isSelectedIndex: $isSelectedIndex,
+                                                frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width , height: reader.frame(in: .local).height))
+                                            )
+                                                .offset(x: 0, y: 0)
+                                    }
+                                    .offset(x: 0, y: 0) //Y: -100 100
+                                }
+                                .frame(width: geometry.frame(in: .local).size.width, height: 200)
                             }
                             .frame(width: geometry.frame(in: .local).size.width, height: 200)
-                        }
-                        .frame(width: geometry.frame(in: .local).size.width, height: 200)
-                        .gesture(DragGesture(minimumDistance: 0)
-                            .onChanged({ position in
-                                let touchPositionX = position.location.x/geometry.frame(in: .local).width
-                                let touchPositionY = position.location.y/geometry.frame(in: .local).height
-                                touchLocation = CGPoint(x: touchPositionX, y: touchPositionY)
-                                touchPoint = CGPoint(x: position.location.x, y: position.location.y)
-                                updateCurrentValue()
-                            })
-                            .onEnded({ position in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    withAnimation(Animation.easeOut(duration: 0.5)) {
-                                        resetValues()
-                                    }
-                                }
-                            })
-                        )
-                        
-                        LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                            ForEach(0..<data.count)   {    i in
-                                Button(action: {
-                                    if ( selectedLineIndex == i) {
-                                        selectedLineIndex = -1
-                                        isSelectedIndex = -1
-                                    }
-                                    else {
-                                        selectedLineIndex = i
-                                        isSelectedIndex = i
+                            .gesture(DragGesture(minimumDistance: 0)
+                                .onChanged({ position in
+                                    let touchPositionX = position.location.x/geometry.frame(in: .local).width
+                                    let touchPositionY = position.location.y/geometry.frame(in: .local).height
+                                    touchLocation = CGPoint(x: touchPositionX, y: touchPositionY)
+                                    touchPoint = CGPoint(x: position.location.x, y: position.location.y)
+                                    updateCurrentValue()
+                                })
+                                .onEnded({ position in
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        withAnimation(Animation.easeOut(duration: 0.5)) {
+                                            resetValues()
+                                        }
                                     }
                                 })
-                                {
-                                    if ( selectedLineIndex == i) {
-                                        HStack {
-                                            data[i].color
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
-                                                .padding(5)
-                                            Text(data[i].label)
-                                                .font(.caption)
-                                                .fontWeight(.heavy)
+                            )
+                            
+                            LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
+                                ForEach(0..<data.count)   {    i in
+                                    Button(action: {
+                                        if ( selectedLineIndex == i) {
+                                            selectedLineIndex = -1
+                                            isSelectedIndex = -1
                                         }
-                                        .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                                    }
-                                    else {
-                                        HStack {
-                                            data[i].color
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                                .padding(5)
-                                            Text(data[i].label)
-                                                .font(.caption)
-                                                .bold()
+                                        else {
+                                            selectedLineIndex = i
+                                            isSelectedIndex = i
+                                        }
+                                    })
+                                    {
+                                        if ( selectedLineIndex == i) {
+                                            HStack {
+                                                data[i].color
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
+                                                    .padding(5)
+                                                Text(data[i].label)
+                                                    .font(.caption)
+                                                    .fontWeight(.heavy)
+                                            }
+                                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                        }
+                                        else {
+                                            HStack {
+                                                data[i].color
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                                    .padding(5)
+                                                Text(data[i].label)
+                                                    .font(.caption)
+                                                    .bold()
+                                            }
                                         }
                                     }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
-                                .buttonStyle(PlainButtonStyle())
                             }
+                                //.padding(.top)
+                            
+                            
                         }
-                            //.padding(.top)
-                        
-                        
+                        .frame(width: geometry.frame(in: .local).size.width, height: 250)
                     }
-                    .frame(width: geometry.frame(in: .local).size.width, height: 250)
                 }
             }
         }
@@ -272,7 +274,7 @@ struct LineChart_Previews: PreviewProvider {
                 ]
             )
         ]
-        
+            
         var body: some View {
             LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
         }
