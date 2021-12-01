@@ -14,7 +14,8 @@ public struct PieChart: View {
     @Binding var data: [PieChartData]
     
     var separatorColor: Color = Color.background
-    var accentColors: [Color]
+    var accentColors: [Color] = [Color.black]
+    var pieSlices: [PieSlice] = [PieSlice(startDegree: 0, endDegree: 360)]
 //    {
 //        var colors: [Color] = [Color]()
 //        for _  in 0..<data.count  {
@@ -36,27 +37,38 @@ public struct PieChart: View {
         self._dataUnit = dataUnit
         self._data = data
 
-        accentColors = [Color]()
+        //accentColors = [Color]()
+        accentColors.removeAll()
         for _  in 0..<self.data.count  {
             accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
+        }
+        
+        pieSlices.removeAll()
+        self.data.enumerated().forEach {(index, data) in
+            let value = normalizedValue(index: index, data: self.data)
+            if pieSlices.isEmpty    {
+                pieSlices.append((.init(startDegree: 0, endDegree: value * 360)))
+            } else {
+                pieSlices.append(.init(startDegree: pieSlices.last!.endDegree,    endDegree: (value * 360 + pieSlices.last!.endDegree)))
+            }
         }
 
     }
     
     
     
-    var pieSlices: [PieSlice] {
-        var slices = [PieSlice]()
-        data.enumerated().forEach {(index, data) in
-            let value = normalizedValue(index: index, data: self.data)
-            if slices.isEmpty    {
-                slices.append((.init(startDegree: 0, endDegree: value * 360)))
-            } else {
-                slices.append(.init(startDegree: slices.last!.endDegree,    endDegree: (value * 360 + slices.last!.endDegree)))
-            }
-        }
-        return slices
-    }
+//    var pieSlices: [PieSlice] {
+//        var slices = [PieSlice]()
+//        data.enumerated().forEach {(index, data) in
+//            let value = normalizedValue(index: index, data: self.data)
+//            if slices.isEmpty    {
+//                slices.append((.init(startDegree: 0, endDegree: value * 360)))
+//            } else {
+//                slices.append(.init(startDegree: slices.last!.endDegree,    endDegree: (value * 360 + slices.last!.endDegree)))
+//            }
+//        }
+//        return slices
+//    }
     
     private var gridItemLayout = [
         GridItem(.flexible()),
