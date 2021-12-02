@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct PieChartData {
+public struct PieChartData: Equatable {
      var label: String
      var value: Double
     
