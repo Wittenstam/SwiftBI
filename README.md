@@ -17,8 +17,6 @@ BarChart | LineChart | MulitLineChart | RadarChart | PieChart
 
 You can easily add this package to your app via **Swift Package Manager**. Just add this Swift package in Xcode using this Github repository url. (File > Add Packages...)
 
-## Author
-Marcus Wittenstam
 
 ## Usage
 ```swift
@@ -161,4 +159,7 @@ import SwiftBI
         PieChart(title: $title, dataUnit: $dataUnit, data: $data)
     }
 ```
+
+## Author
+Marcus Wittenstam
 
