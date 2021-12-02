@@ -74,7 +74,7 @@ public struct PieChart: View {
                     ZStack {
                         VStack {
                             ZStack  {
-                                ForEach(0..<self.data.count){ i in
+                                ForEach(0..<self.data.count, id: \.self){ i in
                                     PieChartSlice(
                                         center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY),
                                         radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY),
@@ -89,7 +89,7 @@ public struct PieChart: View {
                                 .gesture(DragGesture(minimumDistance: 0)
                                         .onChanged({ position in
                                             let pieSize = geometry.frame(in: .local)
-                                            touchLocation   =   position.location
+                                            touchLocation = position.location
                                             updateCurrentValue(inPie: pieSize)
                                         })
                                         .onEnded({ _ in
@@ -126,7 +126,8 @@ public struct PieChart: View {
                     }
                 }
                 LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
-                    ForEach(0..<data.count)   {    i in
+                    ForEach(0..<data.count, id: \.self) { i in
+                        
                         HStack {
                             accentColors[i]
                                 .aspectRatio(contentMode: .fit)
