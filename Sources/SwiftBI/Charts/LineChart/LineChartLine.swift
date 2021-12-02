@@ -139,14 +139,14 @@ public struct LineChartLine: View {
                         .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 5, lineJoin: .round))
                         .rotationEffect(.degrees(180), anchor: .center)
                         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4), value: 1.0)
                 }
                 else {
                     path
                         .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
                         .rotationEffect(.degrees(180), anchor: .center)
                         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4), value: 1.0)
                 }
             }
             

@@ -71,7 +71,7 @@ public struct LineChart: View {
                                         .padding(5)
                                         .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
                                         .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                        .animation(.easeIn)
+                                        .animation(.easeIn, value: 1.0)
                                 }
                                 if (!currentValue.isEmpty && currentValue != "-1.0") {
                                     Text("\(currentValue) \(dataUnit)")
@@ -81,7 +81,7 @@ public struct LineChart: View {
                                         .padding(5)
                                         .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.white).shadow(radius: 3))
                                         .offset(x: labelOffset(in: geometry.frame(in: .local).width))
-                                        .animation(.easeIn)
+                                        .animation(.easeIn, value: 1.0)
                                 } else {
                                     Text("")
                                         .bold()
