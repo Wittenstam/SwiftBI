@@ -48,7 +48,10 @@ public struct PieChart: View {
         }
         
         print("piechart init")
-
+        print("data: ", data.count)
+        print("_data: ", _data.count)
+        print("accentColors: ", accentColors.count)
+        print("pieSlices: ", pieSlices.count)
     }
     
 
