@@ -4,6 +4,8 @@ A SwiftUI package filled with smooth graphs for your iOS, macOS or watchOS app.
 
 All types of charts support light and dark mode, and all chart types has touch support.
 
+You can also check out this demo app if you want to see the charts in action. https://github.com/Wittenstam/SwiftBI-Demo
+
 There are five types of charts:
 All images are shown with dark mode enables and simulates a user interacting with the chart by touching it and displaying the value 
 
