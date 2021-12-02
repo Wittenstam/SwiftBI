@@ -134,11 +134,20 @@ public struct LineChartLine: View {
                     //.animation(.easeIn(duration: 1.6))
             }
             else {
-                path
-                    .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
-                    .rotationEffect(.degrees(180), anchor: .center)
-                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                    .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+                if (isSelectedIndex == lineIndex) {
+                    path
+                        .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 5, lineJoin: .round))
+                        .rotationEffect(.degrees(180), anchor: .center)
+                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+                }
+                else {
+                    path
+                        .stroke(data[lineIndex].color,style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                        .rotationEffect(.degrees(180), anchor: .center)
+                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4))
+                }
             }
             
             if (isSelectedIndex == lineIndex || data.count < 2) {
