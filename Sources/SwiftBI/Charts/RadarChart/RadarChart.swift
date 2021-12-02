@@ -18,9 +18,12 @@ public struct RadarChart: View {
     @Binding var maxValue: Double
     @Binding var divisions: Int
     
+    var pieSlices: [PieSlice] = [PieSlice(startDegree: 0, endDegree: 360)]
+    
     @State private var currentValue = ""
     @State private var currentLabel = ""
     @State private var touchLocation: CGPoint = .init(x: -1, y: -1)
+    
   
     public init(
                 title: Binding<String>,
@@ -40,34 +43,31 @@ public struct RadarChart: View {
         self._data = data
         self._maxValue = maxValue
         self._divisions = divisions
-    }
-    
-    var pieSlices: [PieSlice] {
-        var slices = [PieSlice]()
-        let value = Double(360) / Double(data.count)
-        data.enumerated().forEach {(index, data) in
-            //let radius = min(rect.maxX - rect.midX, rect.maxY - rect.midY)
-            
-            if slices.isEmpty {
+        
+        pieSlices.removeAll()
+        let value = Double(360) / Double(self._data.count)
+        self._data.enumerated().forEach {(index, data) in
+            if pieSlices.isEmpty {
                 var endValue = (Double(270) + Double(value/2))
                 endValue = endValue.truncatingRemainder(dividingBy: 360)
                 if (endValue < 0) {
                     endValue += 360;
                 }
-                slices.append((.init(startDegree: (Double(270)-(value/2)), endDegree: endValue )))
+                pieSlices.append((.init(startDegree: (Double(270)-(value/2)), endDegree: endValue )))
                 
             } else {
-                var endValue = (Double(value) + slices.last!.endDegree)
+                var endValue = (Double(value) + pieSlices.last!.endDegree)
                 endValue = endValue.truncatingRemainder(dividingBy: 360)
                 if (endValue < 0) {
                     endValue += 360;
                 }
-                slices.append(.init(startDegree: slices.last!.endDegree, endDegree: endValue))
+                pieSlices.append(.init(startDegree: pieSlices.last!.endDegree, endDegree: endValue))
             }
         }
-        return slices
+        
     }
-  
+    
+
     public var body: some View {
         VStack(alignment: .leading) {
             if (!data.isEmpty) {
@@ -90,7 +90,7 @@ public struct RadarChart: View {
                                 .stroke(dataColor, lineWidth: 2.0)
                             
                             ZStack  {
-                                ForEach(0..<self.data.count){ i in
+                                ForEach(0..<self.data.count, id: \.self){ i in
                                     PieChartSlice(center: CGPoint(x: geometry.frame(in: .local).midX, y: geometry.frame(in:  .local).midY), radius: min(geometry.frame(in: .local).maxX - geometry.frame(in: .local).midX,geometry.frame(in: .local).maxY - geometry.frame(in: .local).midY), startDegree: pieSlices[i].startDegree, endDegree: pieSlices[i].endDegree, isTouched: sliceIsTouched(index: i, inPie: geometry.frame(in:  .local)), accentColor: dataColor.opacity(0.001), separatorColor: gridColor.opacity(0.001))
                                 }
                             }

@@ -46,12 +46,7 @@ public struct PieChart: View {
                 pieSlices.append(.init(startDegree: pieSlices.last!.endDegree,    endDegree: (value * 360 + pieSlices.last!.endDegree)))
             }
         }
-        
-        print("piechart init")
-        print("data: ", data.count)
-        print("_data: ", _data.count)
-        print("accentColors: ", accentColors.count)
-        print("pieSlices: ", pieSlices.count)
+
     }
     
 
