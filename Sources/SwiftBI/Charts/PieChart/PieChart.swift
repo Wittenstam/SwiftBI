@@ -33,13 +33,13 @@ public struct PieChart: View {
 
         //accentColors = [Color]()
         accentColors.removeAll()
-        for _  in 0..<self.data.count  {
+        for _  in 0..<self._data.count  {
             accentColors.append(Color.init(red: Double.random(in: 0.2...0.9), green: Double.random(in: 0.2...0.9), blue: Double.random(in: 0.2...0.9)))
         }
 
         pieSlices.removeAll()
-        self.data.enumerated().forEach {(index, data) in
-            let value = normalizedValue(index: index, data: self.data)
+        self._data.enumerated().forEach {(index, data) in
+            let value = normalizedValue(index: index, data: self._data)
             if pieSlices.isEmpty    {
                 pieSlices.append((.init(startDegree: 0, endDegree: value * 360)))
             } else {
@@ -183,13 +183,13 @@ public struct PieChart: View {
         return pieSlices.firstIndex(where: { $0.startDegree < angle && $0.endDegree > angle }) == index
     }
     
-    func normalizedValue(index: Int, data: [PieChartData]) -> Double {
+    func normalizedValue(index: Int, data: Binding<[PieChartData]>) -> Double {
         var total = 0.0
         data.forEach { data in
-            total += data.value
+            total += data.value.wrappedValue
         }
         
-        return data[index].value/total
+        return data[index].value.wrappedValue / total
     }
 
 
