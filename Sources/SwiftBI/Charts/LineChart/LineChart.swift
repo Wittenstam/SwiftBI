@@ -145,12 +145,12 @@ public struct LineChart: View {
                                             HStack {
                                                 data[i].color
                                                     .aspectRatio(contentMode: .fit)
-                                                    .frame(minWidth: 0, maxWidth: 33, minHeight: 33)
+                                                    .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
                                                     .padding(5)
                                                 Text(data[i].label)
                                                     .font(.caption)
                                                     .fontWeight(.bold)
-                                                    .font(.system(size: 20))
+                                                    .font(.system(size: 30))
                                             }
                                             .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
                                         }
