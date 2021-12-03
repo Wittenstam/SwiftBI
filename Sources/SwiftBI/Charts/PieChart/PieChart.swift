@@ -122,7 +122,7 @@ public struct PieChart: View {
                 }
                 LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
                     ForEach(0..<data.count, id: \.self) { i in
-                        if (data[i].value.count > 0 ) {
+                        if (data[i].value > 0 ) {
                             HStack {
                                 accentColors[i]
                                     .aspectRatio(contentMode: .fit)
