@@ -50,6 +50,7 @@ import SwiftBI
 ```swift
    @State var title: String = "Montly Sales"
    @State var legend: String = "Month"
+   @State var showLegends: Bool = true
    @State var dataUnit: String =  "SEK"
    @State var maxValue: Double = 0
    @State var data : [LineChartDataLine] = [
@@ -67,7 +68,7 @@ import SwiftBI
    ]
 
    var body: some View {
-       LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
+       LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, showLegends: $showLegends, data: $data)
    }
 ```
 
@@ -75,6 +76,7 @@ import SwiftBI
 ```swift
     @State var title: String = "Montly Sales"
     @State var legend: String = "Month"
+    @State var showLegends: Bool = true
     @State var dataUnit: String =  "SEK"
     @State var maxValue: Double = 0
     @State var data : [LineChartDataLine] = [
@@ -114,7 +116,7 @@ import SwiftBI
     ]
 
     var body: some View {
-        LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
+        LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, showLegends: $showLegends, data: $data)
     }
 ```
 
@@ -146,6 +148,7 @@ import SwiftBI
 ```swift
     @State var title: String = "Monthly Sales"
     @State var dataUnit: String =  "SEK"
+    @State var showLegends: Bool = true
     @State var data : [PieChartData] = [
         PieChartData(label: "January", value: 150.32),
         PieChartData(label: "February", value: 202.32),
@@ -156,7 +159,7 @@ import SwiftBI
         PieChartData(label: "July", value: 50.98)
     ]
     var body: some View {
-        PieChart(title: $title, dataUnit: $dataUnit, data: $data)
+        PieChart(title: $title, dataUnit: $dataUnit, showLegends: $showLegends, data: $data)
     }
 ```
 

@@ -133,7 +133,7 @@ public struct LineChart: View {
                                 })
                             )
                             
-                            if (showLegends) {
+                            if (showLegends == true) {
                                 LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
                                     ForEach(0..<data.count)   {    i in
                                         if (data[i].value.count > 0 ) {
