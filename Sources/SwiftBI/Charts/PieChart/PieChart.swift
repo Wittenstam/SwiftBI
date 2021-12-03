@@ -63,7 +63,7 @@ public struct PieChart: View {
             if (!data.isEmpty) {
                 Text(title)
                     .bold()
-                    .font(.largeTitle)
+                    .font(.title)
                 
                 GeometryReader { geometry in
                     ZStack {

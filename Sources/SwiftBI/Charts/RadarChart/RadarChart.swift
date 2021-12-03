@@ -73,7 +73,7 @@ public struct RadarChart: View {
             if (!data.isEmpty) {
                 Text(title)
                     .bold()
-                    .font(.largeTitle)
+                    .font(.title)
     //            Text("Current value: \(currentValue) \(dataUnit)")
     //                .font(.headline)
                 GeometryReader { geometry in

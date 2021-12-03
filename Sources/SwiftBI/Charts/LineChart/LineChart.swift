@@ -52,7 +52,7 @@ public struct LineChart: View {
             if (!data.isEmpty) {
                 Text(title)
                     .bold()
-                    .font(.largeTitle)
+                    .font(.title)
                 VStack{
                     GeometryReader{ geometry in
                         VStack {
