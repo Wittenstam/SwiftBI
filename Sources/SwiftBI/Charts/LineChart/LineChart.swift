@@ -28,7 +28,7 @@ public struct LineChart: View {
     public init(
                 title: Binding<String>,
                 legend: Binding<String>,
-                showLegends: Binging<Bool>,
+                showLegends: Binding<Bool>,
                 dataUnit: Binding<String>,
                 maxValue: Binding<Double>, //= 0,
                 data: Binding<[LineChartDataLine]>

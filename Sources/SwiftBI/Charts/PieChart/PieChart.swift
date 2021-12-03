@@ -27,7 +27,7 @@ public struct PieChart: View {
     public init(
         title: Binding<String>,
         dataUnit: Binding<String>,
-        showLegends: Binging<Bool>,
+        showLegends: Binding<Bool>,
         data: Binding<[PieChartData]>
     ) {
         self._title = title
