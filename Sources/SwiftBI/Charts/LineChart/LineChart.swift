@@ -12,9 +12,11 @@ public struct LineChart: View {
     
     @Binding var title: String
     @Binding var legend: String
+    @Binding var showLegends: Bool
     @Binding var dataUnit: String
     @Binding var maxValue: Double
     @Binding var data: [LineChartDataLine]
+    
         
     @State private var currentValue = ""
     @State private var currentLabel = ""
@@ -26,12 +28,14 @@ public struct LineChart: View {
     public init(
                 title: Binding<String>,
                 legend: Binding<String>,
+                showLegends: Binging<Bool>,
                 dataUnit: Binding<String>,
                 maxValue: Binding<Double>, //= 0,
                 data: Binding<[LineChartDataLine]>
     ) {
         self._title = title
         self._legend = legend
+        self._showLegends = showLegends
         self._dataUnit = dataUnit
         self._maxValue = maxValue
         self._data = data
@@ -52,7 +56,8 @@ public struct LineChart: View {
             if (!data.isEmpty) {
                 Text(title)
                     .bold()
-                    .font(.title)
+                    //.font(.title)
+                    .font(.system(size: 25, weight: .bold))
                 VStack{
                     GeometryReader{ geometry in
                         VStack {
@@ -128,51 +133,52 @@ public struct LineChart: View {
                                 })
                             )
                             
-                            LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                                ForEach(0..<data.count)   {    i in
-                                    if (data[i].value.count > 0 ) {
-                                        Button(action: {
-                                            if ( selectedLineIndex == i) {
-                                                selectedLineIndex = -1
-                                                isSelectedIndex = -1
-                                            }
-                                            else {
-                                                selectedLineIndex = i
-                                                isSelectedIndex = i
-                                            }
-                                        })
-                                        {
-                                            if ( selectedLineIndex == i) {
-                                                HStack {
-                                                    data[i].color
-                                                        .aspectRatio(contentMode: .fit)
-                                                        .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
-                                                        .padding(5)
-                                                    Text(data[i].label)
-                                                        .font(.caption)
-                                                        .fontWeight(.bold)
-                                                        .font(.system(size: 30))
+                            if (showLegends) {
+                                LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
+                                    ForEach(0..<data.count)   {    i in
+                                        if (data[i].value.count > 0 ) {
+                                            Button(action: {
+                                                if ( selectedLineIndex == i) {
+                                                    selectedLineIndex = -1
+                                                    isSelectedIndex = -1
                                                 }
-                                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                                            }
-                                            else {
-                                                HStack {
-                                                    data[i].color
-                                                        .aspectRatio(contentMode: .fit)
-                                                        .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                                        .padding(5)
-                                                    Text(data[i].label)
-                                                        .font(.caption)
-                                                        .bold()
+                                                else {
+                                                    selectedLineIndex = i
+                                                    isSelectedIndex = i
+                                                }
+                                            })
+                                            {
+                                                if ( selectedLineIndex == i) {
+                                                    HStack {
+                                                        data[i].color
+                                                            .aspectRatio(contentMode: .fit)
+                                                            .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
+                                                            .padding(5)
+                                                        Text(data[i].label)
+                                                            .font(.caption)
+                                                            .fontWeight(.bold)
+                                                            .font(.system(size: 30))
+                                                    }
+                                                    .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                                }
+                                                else {
+                                                    HStack {
+                                                        data[i].color
+                                                            .aspectRatio(contentMode: .fit)
+                                                            .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                                            .padding(5)
+                                                        Text(data[i].label)
+                                                            .font(.caption)
+                                                            .bold()
+                                                    }
                                                 }
                                             }
+                                            .buttonStyle(PlainButtonStyle())
                                         }
-                                        .buttonStyle(PlainButtonStyle())
                                     }
                                 }
-                            }
                                 //.padding(.top)
-                            
+                            }
                             
                         }
                         .frame(width: geometry.frame(in: .local).size.width, height: 250)
@@ -251,6 +257,7 @@ struct LineChart_Previews: PreviewProvider {
     struct previewWrapper: View {
         @State var title: String = "Montly Sales"
         @State var legend: String = "Month"
+        @State var showLegends: Bool =  true
         @State var dataUnit: String =  "SEK"
         @State var maxValue: Double = 0
         @State var data : [LineChartDataLine] = [
@@ -279,7 +286,7 @@ struct LineChart_Previews: PreviewProvider {
         ]
             
         var body: some View {
-            LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
+            LineChart(title: $title, legend: $legend, showLegends: $showLegends, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
         }
         
     }

@@ -11,7 +11,9 @@ public struct PieChart: View {
      
     @Binding var title: String
     @Binding var dataUnit: String
+    @Binding var showLegends: Bool
     @Binding var data: [PieChartData]
+    
     
     var separatorColor: Color = Color.background
     var accentColors: [Color] = [Color.black]
@@ -25,10 +27,12 @@ public struct PieChart: View {
     public init(
         title: Binding<String>,
         dataUnit: Binding<String>,
+        showLegends: Binging<Bool>,
         data: Binding<[PieChartData]>
     ) {
         self._title = title
         self._dataUnit = dataUnit
+        self._showLegends = showLegends
         self._data = data
 
         //accentColors = [Color]()
@@ -63,7 +67,8 @@ public struct PieChart: View {
             if (!data.isEmpty) {
                 Text(title)
                     .bold()
-                    .font(.title)
+                    //.font(.title)
+                    .font(.system(size: 25, weight: .bold))
                 
                 GeometryReader { geometry in
                     ZStack {
@@ -120,17 +125,19 @@ public struct PieChart: View {
                         .padding()
                     }
                 }
-                LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
-                    ForEach(0..<data.count, id: \.self) { i in
-                        if (data[i].value > 0 ) {
-                            HStack {
-                                accentColors[i]
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                    .padding(5)
-                                Text(data[i].label)
-                                    .font(.caption)
-                                    .bold()
+                if (showLegends) {
+                    LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
+                        ForEach(0..<data.count, id: \.self) { i in
+                            if (data[i].value > 0 ) {
+                                HStack {
+                                    accentColors[i]
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                        .padding(5)
+                                    Text(data[i].label)
+                                        .font(.caption)
+                                        .bold()
+                                }
                             }
                         }
                     }
@@ -228,6 +235,7 @@ struct PieChart_Previews: PreviewProvider {
     struct previewWrapper: View {
         @State var title: String = "Monthly Sales"
         @State var dataUnit: String =  "SEK"
+        @State var showLegends: Bool =  true
         @State var data : [PieChartData] = [
             PieChartData(label: "January", value: 150.32),
             PieChartData(label: "February", value: 202.32),
@@ -249,7 +257,7 @@ struct PieChart_Previews: PreviewProvider {
 //       ]
             
         var body: some View {
-            PieChart(title: $title, dataUnit: $dataUnit, data: $data)
+            PieChart(title: $title, dataUnit: $dataUnit, showLegends: $showLegends, data: $data)
         }
      }
  }
