@@ -122,15 +122,16 @@ public struct PieChart: View {
                 }
                 LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
                     ForEach(0..<data.count, id: \.self) { i in
-                        
-                        HStack {
-                            accentColors[i]
-                                .aspectRatio(contentMode: .fit)
-                                .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                .padding(5)
-                            Text(data[i].label)
-                                .font(.caption)
-                                .bold()
+                        if (data[i].value.count > 0 ) {
+                            HStack {
+                                accentColors[i]
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                    .padding(5)
+                                Text(data[i].label)
+                                    .font(.caption)
+                                    .bold()
+                            }
                         }
                     }
                 }

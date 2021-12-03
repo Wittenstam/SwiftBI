@@ -130,43 +130,45 @@ public struct LineChart: View {
                             
                             LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
                                 ForEach(0..<data.count)   {    i in
-                                    Button(action: {
-                                        if ( selectedLineIndex == i) {
-                                            selectedLineIndex = -1
-                                            isSelectedIndex = -1
-                                        }
-                                        else {
-                                            selectedLineIndex = i
-                                            isSelectedIndex = i
-                                        }
-                                    })
-                                    {
-                                        if ( selectedLineIndex == i) {
-                                            HStack {
-                                                data[i].color
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
-                                                    .padding(5)
-                                                Text(data[i].label)
-                                                    .font(.caption)
-                                                    .fontWeight(.bold)
-                                                    .font(.system(size: 30))
+                                    if (data[i].value.count > 0 ) {
+                                        Button(action: {
+                                            if ( selectedLineIndex == i) {
+                                                selectedLineIndex = -1
+                                                isSelectedIndex = -1
                                             }
-                                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
-                                        }
-                                        else {
-                                            HStack {
-                                                data[i].color
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
-                                                    .padding(5)
-                                                Text(data[i].label)
-                                                    .font(.caption)
-                                                    .bold()
+                                            else {
+                                                selectedLineIndex = i
+                                                isSelectedIndex = i
+                                            }
+                                        })
+                                        {
+                                            if ( selectedLineIndex == i) {
+                                                HStack {
+                                                    data[i].color
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(minWidth: 0, maxWidth: 30, minHeight: 30)
+                                                        .padding(5)
+                                                    Text(data[i].label)
+                                                        .font(.caption)
+                                                        .fontWeight(.bold)
+                                                        .font(.system(size: 30))
+                                                }
+                                                .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.clear).shadow(radius: 3))
+                                            }
+                                            else {
+                                                HStack {
+                                                    data[i].color
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(minWidth: 0, maxWidth: 20, minHeight: 20)
+                                                        .padding(5)
+                                                    Text(data[i].label)
+                                                        .font(.caption)
+                                                        .bold()
+                                                }
                                             }
                                         }
+                                        .buttonStyle(PlainButtonStyle())
                                     }
-                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                                 //.padding(.top)
