@@ -125,7 +125,7 @@ public struct PieChart: View {
                         .padding()
                     }
                 }
-                if (showLegends == true) {
+                if showLegends {
                     LazyVGrid(columns: gridItemLayout, alignment: .leading, spacing: 10) {
                         ForEach(0..<data.count, id: \.self) { i in
                             if (data[i].value > 0 ) {

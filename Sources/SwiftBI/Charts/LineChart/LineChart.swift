@@ -133,7 +133,7 @@ public struct LineChart: View {
                                 })
                             )
                             
-                            if (showLegends == true) {
+                            if showLegends {
                                 LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
                                     ForEach(0..<data.count)   {    i in
                                         if (data[i].value.count > 0 ) {
@@ -257,8 +257,8 @@ struct LineChart_Previews: PreviewProvider {
     struct previewWrapper: View {
         @State var title: String = "Montly Sales"
         @State var legend: String = "Month"
-        @State var showLegends: Bool =  true
-        @State var dataUnit: String =  "SEK"
+        @State var showLegends: Bool = true
+        @State var dataUnit: String = "SEK"
         @State var maxValue: Double = 0
         @State var data : [LineChartDataLine] = [
             LineChartDataLine(label: "First", color: Color.green, isFilled: true, isCurved: true, value:
