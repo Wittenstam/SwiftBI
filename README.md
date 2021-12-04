@@ -68,7 +68,7 @@ import SwiftBI
    ]
 
    var body: some View {
-       LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, showLegends: $showLegends, data: $data)
+       LineChart(title: $title, legend: $legend, showLegends: $showLegends, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
    }
 ```
 
@@ -116,7 +116,7 @@ import SwiftBI
     ]
 
     var body: some View {
-        LineChart(title: $title, legend: $legend, dataUnit: $dataUnit, maxValue: $maxValue, showLegends: $showLegends, data: $data)
+        LineChart(title: $title, legend: $legend, showLegends: $showLegends, dataUnit: $dataUnit, maxValue: $maxValue, data: $data)
     }
 ```
 
