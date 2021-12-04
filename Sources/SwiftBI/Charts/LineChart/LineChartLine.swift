@@ -131,7 +131,7 @@ public struct LineChartLine: View {
                     .rotationEffect(.degrees(180), anchor: .center)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                     .transition(.opacity)
-                    .shadow(color: Color(uiColor: .clear).opacity(0), radius: 0, x: 0, y: 0)
+                    .shadow(color: .clear, radius: 0, x: 0, y: 0)
                     //.animation(.easeIn(duration: 1.6))
             }
             else {
@@ -141,7 +141,7 @@ public struct LineChartLine: View {
                         .rotationEffect(.degrees(180), anchor: .center)
                         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                         .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4), value: 1.0)
-                        .shadow(color: Color(uiColor: .clear).opacity(0), radius: 0, x: 0, y: 0)
+                        .shadow(color: .clear, radius: 0, x: 0, y: 0)
                 }
                 else {
                     path
@@ -149,7 +149,7 @@ public struct LineChartLine: View {
                         .rotationEffect(.degrees(180), anchor: .center)
                         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                         .animation(Animation.easeOut(duration: 1.2).delay(Double(self.lineIndex) * 0.4), value: 1.0)
-                        .shadow(color: Color(uiColor: .clear).opacity(0), radius: 0, x: 0, y: 0)
+                        .shadow(color: .clear, radius: 0, x: 0, y: 0)
                 }
             }
             
