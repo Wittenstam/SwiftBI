@@ -29,16 +29,15 @@ struct RadarChartPath: Shape {
             return values
         }
         
-        var maximumValue = maxValue
-        if (maximumValue == 0) {
-            guard
-                3 <= allValues.count,
-                    let minimum = allValues.min(),
-                0 <= minimum,
-                        let maximum = allValues.max()
-                else { return Path() }
-            maximumValue = maximum
-        }
+        guard
+            3 <= allValues.count,
+                let minimum = allValues.min(),
+            0 <= minimum,
+                    let maximum = allValues.max()
+            else { return Path() }
+        
+        var maximumValue = Double.maximum(maxValue, maximum)
+        
         let radius = min(maxX - midX, maxY - midY)
         var path = Path()
 
