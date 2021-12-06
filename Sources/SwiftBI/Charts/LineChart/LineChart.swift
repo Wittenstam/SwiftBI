@@ -53,7 +53,7 @@ public struct LineChart: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            if (!data.isEmpty) {
+            if (!self.data.isEmpty) {
                 Text(title)
                     .bold()
                     //.font(.title)
@@ -135,7 +135,7 @@ public struct LineChart: View {
                             
                             if showLegends {
                                 LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                                    ForEach(0..<data.count)   {    i in
+                                    ForEach(0..<self.data.count)   {    i in
                                         if (data[i].value.count > 0 ) {
                                             Button(action: {
                                                 if ( selectedLineIndex == i) {
@@ -194,7 +194,7 @@ public struct LineChart: View {
     
     func updateCurrentValue() {
         
-        if (data.count > 0 && data.count < 2) {
+        if (self.data.count > 0 && self.data.count < 2) {
             let index = Int(touchLocation.x * CGFloat(data[0].value.count))
             guard index < data[0].value.count && index >= 0 else {
                 currentValue = ""
@@ -204,7 +204,7 @@ public struct LineChart: View {
             currentValue = "\(data[0].value[index].value)"
             currentLabel = data[0].value[index].label
         }
-        else if (data.count >= 2 && selectedLineIndex != -1) {
+        else if (self.data.count >= 2 && selectedLineIndex != -1) {
             let index = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
             guard index < data[selectedLineIndex].value.count && index >= 0 else {
                 currentValue = ""
@@ -225,7 +225,7 @@ public struct LineChart: View {
     
     func labelOffset(in width: CGFloat) -> CGFloat {
         var position: CGFloat = 0
-        if (data.count > 0 && data.count < 2) {
+        if (self.data.count > 0 && self.data.count < 2) {
             let currentIndex = Int(touchLocation.x * CGFloat(data[0].value.count))
             guard currentIndex < data[0].value.count && currentIndex >= 0 else {
                 return 0
@@ -234,7 +234,7 @@ public struct LineChart: View {
             let actualWidth = width - cellWidth
             position = cellWidth * CGFloat(currentIndex) - actualWidth/2
         }
-        else if (data.count >= 2 && selectedLineIndex != -1) {
+        else if (self.data.count >= 2 && selectedLineIndex != -1) {
             let currentIndex = Int(touchLocation.x * CGFloat(data[selectedLineIndex].value.count))
             guard currentIndex < data[selectedLineIndex].value.count && currentIndex >= 0 else {
                 return 0
