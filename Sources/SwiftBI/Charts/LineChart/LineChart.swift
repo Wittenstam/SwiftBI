@@ -100,7 +100,7 @@ public struct LineChart: View {
                             
                             ZStack{
                                 GeometryReader{ reader in
-                                    ForEach(0..<$data.count){ index in
+                                    ForEach(0..<$data.count, id: \.self){ index in
                                             LineChartLine(
                                                 data: data,
                                                 lineIndex: index,
@@ -135,7 +135,7 @@ public struct LineChart: View {
                             
                             if showLegends {
                                 LazyVGrid(columns: gridItemLayout, alignment: .center, spacing: 10) {
-                                    ForEach(0..<$data.count)   {    i in
+                                    ForEach(0..<$data.count, id: \.self)   {    i in
                                         if (data[i].value.count > 0 ) {
                                             Button(action: {
                                                 if ( selectedLineIndex == i) {
