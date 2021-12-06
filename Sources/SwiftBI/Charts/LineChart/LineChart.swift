@@ -58,8 +58,8 @@ public struct LineChart: View {
                     .bold()
                     //.font(.title)
                     .font(.system(size: 25, weight: .bold))
-                VStack{
-                    GeometryReader{ geometry in
+                VStack {
+                    GeometryReader { geometry in
                         VStack {
                             
                             VStack {
