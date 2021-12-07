@@ -14,7 +14,7 @@ BarChart | LineChart | MulitLineChart | RadarChart | PieChart
 
 ## Installation
 
-You can easily add this package to your app via **Swift Package Manager**. Just add this Swift package in Xcode using this Github repository url. (File > Add Packages...)
+You can easily add this package to your app via **Swift Package Manager**. Just add this Swift package in Xcode using this Github repository url (https://github.com/Wittenstam/SwiftBI). (File > Add Packages...)
 
 
 ## Usage
