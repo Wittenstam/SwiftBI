@@ -17,7 +17,7 @@ public struct ProgressChart: View {
     @Binding var progressColor: Color
     @Binding var maxValue: Double
     @Binding var type: ProgressChartType
-    @Binding var data: ProgressChartData
+    @Binding var data: Double
 
     public init(
                 title: Binding<String>,
@@ -28,7 +28,7 @@ public struct ProgressChart: View {
                 progressColor: Binding<Color>,
                 maxValue: Binding<Double>,
                 type: Binding<ProgressChartType>,
-                data: Binding<ProgressChartData>
+                data: Binding<Double>
     ) {
         self._title = title
         self._legend = legend
@@ -60,10 +60,10 @@ public struct ProgressChart: View {
                             VStack {
                                 if showLabel == true {
                                     if (showProcentage == true) {
-                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                        Text("\(Int((data / maxValue) * 100))%")
                                             .font(.system(size: 30))
                                     } else {
-                                        Text("\(Int(data.value)) \(dataUnit)")
+                                        Text("\(Int(data)) \(dataUnit)")
                                             .font(.system(size: 30))
                                     }
                                 }
@@ -74,7 +74,7 @@ public struct ProgressChart: View {
                                         .frame(width: geometry.size.width, height: 20)
                                     RoundedRectangle(cornerRadius: 20)
                                         .foregroundColor(progressColor)
-                                        .frame(width: geometry.size.width * (data.value / maxValue), height: 20)
+                                        .frame(width: geometry.size.width * (data / maxValue), height: 20)
                                 }
                             }
                         }
@@ -84,17 +84,17 @@ public struct ProgressChart: View {
                                     .stroke(Color(UIColor.lightGray), lineWidth: 15)
                                     .frame(width: geometry.size.width)
                                 Circle()
-                                    .trim(from: 0.0, to: (data.value / maxValue) )
+                                    .trim(from: 0.0, to: (data / maxValue) )
                                     .stroke(progressColor, lineWidth: 15)
                                     .frame(width: geometry.size.width)
                                     .rotationEffect(Angle(degrees: -90))
                                 
                                 if showLabel == true {
                                     if (showProcentage == true) {
-                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                        Text("\(Int((data / maxValue) * 100))%")
                                             .font(.system(size: 30))
                                     } else {
-                                        Text("\(Int(data.value)) \(dataUnit)")
+                                        Text("\(Int(data)) \(dataUnit)")
                                             .font(.system(size: 30))
                                     }
                                 }
@@ -108,17 +108,17 @@ public struct ProgressChart: View {
                                     .frame(width: geometry.size.width)
                                     .rotationEffect(Angle(degrees: -180))
                                 Circle()
-                                    .trim(from: 0.0, to: (data.value / maxValue)/2)
+                                    .trim(from: 0.0, to: (data / maxValue)/2)
                                     .stroke(progressColor, lineWidth: 12.0)
                                     .frame(width: geometry.size.width)
                                     .rotationEffect(Angle(degrees: -180))
                                 
                                 if showLabel == true {
                                     if (showProcentage == true) {
-                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                        Text("\(Int((data / maxValue) * 100))%")
                                             .font(.system(size: 30))
                                     } else {
-                                        Text("\(Int(data.value)) \(dataUnit)")
+                                        Text("\(Int(data)) \(dataUnit)")
                                             .font(.system(size: 30))
                                     }
                                 }
@@ -148,7 +148,7 @@ struct SwiftUIView_Previews: PreviewProvider {
         @State var progressColor: Color = .blue
         @State var maxValue: Double = 60
         @State var type: ProgressChartType = .circle
-        @State var data: ProgressChartData = ProgressChartData(label: "Timer", value: 46.7)
+        @State var data: Double = 46.7
          
         var body: some View {
             ProgressChart(title: $title, legend: $legend, dataUnit: $dataUnit, showProcentage: $showProcentage, showLabel: $showLabel, progressColor: $progressColor, maxValue: $maxValue, type: $type, data: $data)

@@ -172,7 +172,7 @@ import SwiftBI
     @State var progressColor: Color = .blue
     @State var maxValue: Double = 60
     @State var type: ProgressChartType = .circle
-    @State var data: ProgressChartData = ProgressChartData(label: "Timer", value: 46.7)
+    @State var data: Double = 46.7
      
     var body: some View {
         ProgressChart(title: $title, legend: $legend, dataUnit: $dataUnit, showProcentage: $showProcentage, showLabel: showLabel progressColor: $progressColor, maxValue: $maxValue, type: $type, data: $data)
