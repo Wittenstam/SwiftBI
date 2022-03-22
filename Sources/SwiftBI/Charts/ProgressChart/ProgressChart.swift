@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProgressChart: View {
+public struct ProgressChart: View {
     
     @Binding var title: String
     @Binding var legend: String

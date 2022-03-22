@@ -17,7 +17,7 @@ public struct ProgressChartData: Equatable {
     }
  }
 
-enum ProgressChartType: Codable  {
+public enum ProgressChartType: Codable  {
     case line
     case circle
     case halfcircle
