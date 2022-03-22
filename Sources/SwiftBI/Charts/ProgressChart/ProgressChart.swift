@@ -66,10 +66,10 @@ public struct ProgressChart: View {
                                 ZStack(alignment: .leading) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .foregroundColor(Color(UIColor.lightGray))
-                                        .frame(width: 300, height: 20)
+                                        .frame(width: geometry.size.width, height: 20)
                                     RoundedRectangle(cornerRadius: 20)
                                         .foregroundColor(progressColor)
-                                        .frame(width: 300 * (data.value / maxValue), height: 20)
+                                        .frame(width: geometry.size.width * (data.value / maxValue), height: 20)
                                 }
                             }
                         }
