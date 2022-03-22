@@ -13,6 +13,7 @@ public struct ProgressChart: View {
     @Binding var legend: String
     @Binding var dataUnit: String
     @Binding var showProcentage: Bool
+    @Binding var showLabel: Bool
     @Binding var progressColor: Color
     @Binding var maxValue: Double
     @Binding var type: ProgressChartType
@@ -23,6 +24,7 @@ public struct ProgressChart: View {
                 legend: Binding<String>,
                 dataUnit: Binding<String>,
                 showProcentage: Binding<Bool>,
+                showLabel: Binding<Bool>,
                 progressColor: Binding<Color>,
                 maxValue: Binding<Double>,
                 type: Binding<ProgressChartType>,
@@ -32,6 +34,7 @@ public struct ProgressChart: View {
         self._legend = legend
         self._dataUnit = dataUnit
         self._showProcentage = showProcentage
+        self._showLabel = showLabel
         self._progressColor = progressColor
         self._maxValue = maxValue
         self._type = type
@@ -55,12 +58,14 @@ public struct ProgressChart: View {
                         
                         if (type == .line) {
                             VStack {
-                                if (showProcentage == true) {
-                                    Text("\(Int((data.value / maxValue) * 100))%")
-                                        .font(.system(size: 30))
-                                } else {
-                                    Text("\(Int(data.value)) \(dataUnit)")
-                                        .font(.system(size: 30))
+                                if showLabel == true {
+                                    if (showProcentage == true) {
+                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                            .font(.system(size: 30))
+                                    } else {
+                                        Text("\(Int(data.value)) \(dataUnit)")
+                                            .font(.system(size: 30))
+                                    }
                                 }
                                 
                                 ZStack(alignment: .leading) {
@@ -84,12 +89,14 @@ public struct ProgressChart: View {
                                     .frame(width: geometry.size.width)
                                     .rotationEffect(Angle(degrees: -90))
                                 
-                                if (showProcentage == true) {
-                                    Text("\(Int((data.value / maxValue) * 100))%")
-                                        .font(.system(size: 30))
-                                } else {
-                                    Text("\(Int(data.value)) \(dataUnit)")
-                                        .font(.system(size: 30))
+                                if showLabel == true {
+                                    if (showProcentage == true) {
+                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                            .font(.system(size: 30))
+                                    } else {
+                                        Text("\(Int(data.value)) \(dataUnit)")
+                                            .font(.system(size: 30))
+                                    }
                                 }
                             }
                         }
@@ -106,12 +113,14 @@ public struct ProgressChart: View {
                                     .frame(width: geometry.size.width)
                                     .rotationEffect(Angle(degrees: -180))
                                 
-                                if (showProcentage == true) {
-                                    Text("\(Int((data.value / maxValue) * 100))%")
-                                        .font(.system(size: 30))
-                                } else {
-                                    Text("\(Int(data.value)) \(dataUnit)")
-                                        .font(.system(size: 30))
+                                if showLabel == true {
+                                    if (showProcentage == true) {
+                                        Text("\(Int((data.value / maxValue) * 100))%")
+                                            .font(.system(size: 30))
+                                    } else {
+                                        Text("\(Int(data.value)) \(dataUnit)")
+                                            .font(.system(size: 30))
+                                    }
                                 }
                             }
                         }
@@ -135,13 +144,14 @@ struct SwiftUIView_Previews: PreviewProvider {
         @State var legend: String =  "Minute timer"
         @State var dataUnit: String = "Seconds"
         @State var showProcentage: Bool = true
+        @State var showLabel: Bool = true
         @State var progressColor: Color = .blue
         @State var maxValue: Double = 60
         @State var type: ProgressChartType = .circle
         @State var data: ProgressChartData = ProgressChartData(label: "Timer", value: 46.7)
          
         var body: some View {
-            ProgressChart(title: $title, legend: $legend, dataUnit: $dataUnit, showProcentage: $showProcentage, progressColor: $progressColor, maxValue: $maxValue, type: $type, data: $data)
+            ProgressChart(title: $title, legend: $legend, dataUnit: $dataUnit, showProcentage: $showProcentage, showLabel: $showLabel, progressColor: $progressColor, maxValue: $maxValue, type: $type, data: $data)
         }
     }
 }
