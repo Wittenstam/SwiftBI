@@ -48,10 +48,12 @@ public struct ProgressChart: View {
     
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
-                .bold()
-                //.font(.title)
-                .font(.system(size: 25, weight: .bold))
+            if (!title.isEmpty || title != "") {
+                Text(title)
+                    .bold()
+                    //.font(.title)
+                    .font(.system(size: 25, weight: .bold))
+            }
             VStack {
                 GeometryReader { geometry in
                     VStack {
