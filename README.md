@@ -162,6 +162,22 @@ import SwiftBI
     }
 ```
 
+### Progress Chart
+```swift
+    @State var title: String = "Timer"
+    @State var legend: String =  "Minute timer"
+    @State var dataUnit: String = "Seconds"
+    @State var showProcentage: Bool = true
+    @State var progressColor: Color = .blue
+    @State var maxValue: Double = 60
+    @State var type: ProgressChartType = .circle
+    @State var data: ProgressChartData = ProgressChartData(label: "Timer", value: 46.7)
+     
+    var body: some View {
+        ProgressChart(title: $title, legend: $legend, dataUnit: $dataUnit, showProcentage: $showProcentage, progressColor: $progressColor, maxValue: $maxValue, type: $type, data: $data)
+    }
+```
+
 ## Author
 Marcus Wittenstam
 
