@@ -131,7 +131,7 @@ public struct ProgressChart: View {
                 }
             }
         }
-        .padding()
+        //.padding()
     }
     
     
