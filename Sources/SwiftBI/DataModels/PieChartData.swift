@@ -9,12 +9,13 @@ import Foundation
 
 
 public struct PieChartData: Equatable {
-     var label: String
-     var value: Double
-    
+    var label: String
+    var value: Double
+
     public init(label: String, value: Double) {
         self.label = label
         self.value = value
     }
  }
+
 

@@ -9,8 +9,8 @@ import Foundation
 
 
 public struct BarChartData {
-     var label: String
-     var value: Double
+    var label: String
+    var value: Double
     
     public init(label: String, value: Double) {
         self.label = label
